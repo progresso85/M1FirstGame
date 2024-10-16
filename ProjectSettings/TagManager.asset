@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Tile
   layers:
   - Default
   - TransparentFX
@@ -40,4 +41,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Tile
+    uniqueID: 1611366087
+    locked: 0
+  - name: Building
+    uniqueID: 2699495247
+    locked: 0
+  - name: Character
+    uniqueID: 237076293
     locked: 0
