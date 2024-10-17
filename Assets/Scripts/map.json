@@ -1,0 +1,195 @@
+{
+    "name": "RandomMaze",
+    "type": "Map",
+    "description": "Description of the map",
+    "properties": {
+        "size": {
+            "Xmin": 0,
+            "Xmax": 10,
+            "Ymin": 0,
+            "Ymax": 10
+        },
+        "tiles": [
+            {
+                "type": "Road",
+                "description": "Road tile",
+                "properties": {
+                    "position": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Road",
+                "description": "Road tile",
+                "properties": {
+                    "position": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Sidewalk",
+                "description": "Sidewalk tile",
+                "properties": {
+                    "position": {
+                        "x": 1,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Sidewalk",
+                "description": "Sidewalk tile",
+                "properties": {
+                    "position": {
+                        "x": 2,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Sidewalk",
+                "description": "Sidewalk tile",
+                "properties": {
+                    "position": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Sidewalk",
+                "description": "Sidewalk tile",
+                "properties": {
+                    "position": {
+                        "x": 2,
+                        "y": 2,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Road",
+                "description": "Road tile",
+                "properties": {
+                    "position": {
+                        "x": 3,
+                        "y": 1,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Sidewalk",
+                "description": "Sidewalk tile",
+                "properties": {
+                    "position": {
+                        "x": 3,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Sidewalk",
+                "description": "Sidewalk tile",
+                "properties": {
+                    "position": {
+                        "x": 3,
+                        "y": 2,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Road",
+                "description": "Road tile",
+                "properties": {
+                    "position": {
+                        "x": 1,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Road",
+                "description": "Road tile",
+                "properties": {
+                    "position": {
+                        "x": 2,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Sidewalk",
+                "description": "Sidewalk tile",
+                "properties": {
+                    "position": {
+                        "x": 1,
+                        "y": 4,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Sidewalk",
+                "description": "Sidewalk tile",
+                "properties": {
+                    "position": {
+                        "x": 2,
+                        "y": 4,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Road",
+                "description": "Road tile",
+                "properties": {
+                    "position": {
+                        "x": 3,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            },
+            {
+                "type": "Sidewalk",
+                "description": "Sidewalk tile",
+                "properties": {
+                    "position": {
+                        "x": 3,
+                        "y": 4,
+                        "z": 0
+                    },
+                    "angle": 0
+                }
+            }
+        ]
+    }
+}
