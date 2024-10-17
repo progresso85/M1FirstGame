@@ -18,8 +18,9 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject crosswalk;
     [SerializeField] GameObject crosswalk_vertical;
     [SerializeField] GameObject grass;
+    [SerializeField] GameObject tree;
+    [SerializeField] GameObject house;
     [SerializeField] GameObject lake;
-    [SerializeField] GameObject house_2;
 
     HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
 
@@ -99,6 +100,20 @@ public class MapLoader : MonoBehaviour
                         Instantiate(crosswalk, position, Quaternion.Euler(0, 0, 0));
                         break;
                 }
+                occupiedPositions.Add(position);
+            }
+            else if (tileData.type == "House")
+            {
+                Instantiate(house, position, Quaternion.Euler(0, 0, 0));
+                occupiedPositions.Add(position);
+            }
+            else if (tileData.type == "Tree")
+            {
+                Instantiate(tree, position, Quaternion.Euler(0, 0, 0));
+            }
+            else if (tileData.type == "Lake")
+            {
+                Instantiate(lake, position, Quaternion.Euler(0, 0 , 0));
                 occupiedPositions.Add(position);
             }
         }

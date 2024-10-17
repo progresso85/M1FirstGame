@@ -17,8 +17,9 @@ MonoImporter:
   - crosswalk: {fileID: 871977689926458935, guid: 66e1c4e2de52fb14fad517aded1191ee, type: 3}
   - crosswalk_vertical: {fileID: 7372902667375915387, guid: c3453c3f704789f4dacb09e7a3c1482f, type: 3}
   - grass: {fileID: 7320759406906686267, guid: effda62322bb9d74fb385540d813d4d8, type: 3}
-  - lake: {fileID: 4509486468286722353, guid: c7f27ab035846f6438bc337b79d3c852, type: 3}
-  - house_2: {fileID: 974882910452884499, guid: 2aa6f066732a8894fbfce4f02db7917e, type: 3}
+  - tree: {fileID: 5756575723087947401, guid: 0bddb3fe5277cf247a9cad3d2f5698dc, type: 3}
+  - house: {fileID: 3080695343765572159, guid: 6ef77d08e32d42445be9a7e7a15cacbc, type: 3}
+  - lake: {fileID: 5677055874137037872, guid: da48baf08b7686046801e3790386263b, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
