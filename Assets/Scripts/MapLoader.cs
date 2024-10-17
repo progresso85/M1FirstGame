@@ -7,7 +7,21 @@ public class MapLoader : MonoBehaviour
 {
     [SerializeField] GameObject road;
     [SerializeField] GameObject sidewalk;
+    [SerializeField] GameObject sidewalk_left;
+    [SerializeField] GameObject sidewalk_right;
+    [SerializeField] GameObject sidewalk_top;
+    [SerializeField] GameObject sidewalk_bottom;
+    [SerializeField] GameObject sidewalk_top_left;
+    [SerializeField] GameObject sidewalk_top_right;
+    [SerializeField] GameObject sidewalk_bottom_left;
+    [SerializeField] GameObject sidewalk_bottom_right;
+    [SerializeField] GameObject crosswalk;
+    [SerializeField] GameObject crosswalk_vertical;
     [SerializeField] GameObject grass;
+    [SerializeField] GameObject lake;
+    [SerializeField] GameObject house_2;
+
+    HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
 
     void Start()
     {
@@ -26,37 +40,82 @@ public class MapLoader : MonoBehaviour
 
     private void LoadMap(Map map)
     {
-        HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
-
+        
         foreach (TileData tileData in map.properties.tiles)
         {
             // Choose prefab with its type
+
+            Vector3 position = tileData.properties.position;
+            position = new Vector3((position.x / 2) + (float)0.25, (position.y / 2) + (float)0.25, position.z);
+
             if (tileData.type == "Road")
             {
-                Vector3 position = tileData.properties.position;
-                Instantiate(road, position, Quaternion.Euler(0, tileData.properties.angle, 0));
+                Instantiate(road, position, Quaternion.Euler(0, 0, 0));
                 occupiedPositions.Add(position);
             }
             else if (tileData.type == "Sidewalk")
             {
-                Vector3 position = tileData.properties.position;
-                Instantiate(sidewalk, position, Quaternion.Euler(0, tileData.properties.angle, 0));
+                switch (tileData.properties.angle % 360)
+                {
+                    case 0:
+                        Instantiate(sidewalk_top, position, Quaternion.Euler(0, 0, 0));
+                        break;
+                    case 45:
+                        Instantiate(sidewalk_top_right, position, Quaternion.Euler(0, 0, 0));
+                        break;
+                    case 90:
+                        Instantiate(sidewalk_right, position, Quaternion.Euler(0, 0, 0));
+                        break;
+                    case 135:
+                        Instantiate(sidewalk_bottom_right, position, Quaternion.Euler(0, 0, 0));
+                        break;
+                    case 180:
+                        Instantiate(sidewalk_bottom, position, Quaternion.Euler(0, 0, 0));
+                        break;
+                    case 225:
+                        Instantiate(sidewalk_bottom_left, position, Quaternion.Euler(0, 0, 0));
+                        break;
+                    case 270:
+                        Instantiate(sidewalk_left, position, Quaternion.Euler(0, 0, 0));
+                        break;
+                    case 315:
+                        Instantiate(sidewalk_top_left, position, Quaternion.Euler(0, 0, 0));
+                        break;
+                    default:
+                        Instantiate(sidewalk, position, Quaternion.Euler(0, 0, 0));
+                        break;
+                }
                 occupiedPositions.Add(position);
 
             }
-
-            // Add grass on the unoccupied tiles
-            for (int x = map.properties.size.Xmin; x <= map.properties.size.Xmax; x++)
+            else if (tileData.type == "Crosswalk")
             {
-                for (int y = map.properties.size.Ymin; y <= map.properties.size.Ymax; y++)
+                switch (tileData.properties.angle % 360)
                 {
-                    Vector3 grassPosition = new Vector3(x, y, 0);
-                    if (!occupiedPositions.Contains(grassPosition))
-                    {
-                        Instantiate(grass, grassPosition, Quaternion.identity);
-                    }
+                    case 0:
+                        Instantiate(crosswalk, position, Quaternion.Euler(0, 0, 90));
+                        break;
+                    case 90:
+                        Instantiate(crosswalk, position, Quaternion.Euler(0, 0, 0));
+                        break;
                 }
+                occupiedPositions.Add(position);
             }
         }
+
+        // Add grass on the unoccupied tiles
+        for (int x = 0; x <= map.properties.size.Xmax; x+= 1)
+        {
+            for (int y = 0; y <= map.properties.size.Ymax; y+= 1)
+            {
+                Vector3 lakeCheck1 = new Vector3((float)1.5, 1, 0);
+                Vector3 houseCheck = new Vector3(1, 1, 0);
+                Vector3 grassPosition = new Vector3(((float)x / 2) + (float)0.25, ((float)y / 2) + (float)0.25, 0);
+                if (!occupiedPositions.Contains(grassPosition))
+                {
+                    Instantiate(grass, grassPosition, Quaternion.identity);
+                }
+            }
+        } 
     }
 }
