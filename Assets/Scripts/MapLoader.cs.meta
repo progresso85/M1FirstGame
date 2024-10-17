@@ -3,7 +3,19 @@ guid: bafcd2e1965605c499ca86e6edfe3ac9
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - road: {fileID: 868934505592560937, guid: f718a5d1e3d6ebb469e0c14f4a42f1c4, type: 3}
+  - sidewalk: {fileID: 1577677163108768236, guid: 3e39dcf059a008b4dbe29a1b2bde2fac, type: 3}
+  - sidewalk_left: {fileID: 294810928934071852, guid: 7c50e31c38b2b264b82069d1d94287df, type: 3}
+  - sidewalk_right: {fileID: 4521079252922981054, guid: f0343ebe8d592924eb8b4e5f02849d66, type: 3}
+  - sidewalk_top: {fileID: 1198450556351354678, guid: 185dcb0080fe3d5439d2da0abb90b87c, type: 3}
+  - sidewalk_bottom: {fileID: 4722277919996395746, guid: 26d13f6e63c239944afa3e40dd757b30, type: 3}
+  - sidewalk_top_left: {fileID: 7740339064347279635, guid: c1fe71bba550fc5458de2414a72da566, type: 3}
+  - sidewalk_top_right: {fileID: 4960707436647444971, guid: d7da7e58fe1995a4a9c65d2485b29690, type: 3}
+  - sidewalk_bottom_left: {fileID: 8513578453598622417, guid: bf8879657b226a9458dd1fc883f15ff2, type: 3}
+  - sidewalk_bottom_right: {fileID: 47202609330826333, guid: 034a23285d7b4224d90454867d3cb784, type: 3}
+  - crosswalk: {fileID: 871977689926458935, guid: 66e1c4e2de52fb14fad517aded1191ee, type: 3}
+  - grass: {fileID: 7320759406906686267, guid: effda62322bb9d74fb385540d813d4d8, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
