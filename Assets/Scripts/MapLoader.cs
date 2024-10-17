@@ -16,7 +16,10 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject sidewalk_bottom_left;
     [SerializeField] GameObject sidewalk_bottom_right;
     [SerializeField] GameObject crosswalk;
+    [SerializeField] GameObject crosswalk_vertical;
     [SerializeField] GameObject grass;
+    [SerializeField] GameObject lake;
+    [SerializeField] GameObject house_2;
 
     HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
 
@@ -52,15 +55,9 @@ public class MapLoader : MonoBehaviour
             }
             else if (tileData.type == "Sidewalk")
             {
-                Instantiate(sidewalk, position, Quaternion.Euler(0, 0, 0));
-                occupiedPositions.Add(position);
-
-            }
-            else if (tileData.type == "Crosswalk")
-            {
                 switch (tileData.properties.angle % 360)
                 {
-                    case 0 :
+                    case 0:
                         Instantiate(sidewalk_top, position, Quaternion.Euler(0, 0, 0));
                         break;
                     case 45:
@@ -89,19 +86,36 @@ public class MapLoader : MonoBehaviour
                         break;
                 }
                 occupiedPositions.Add(position);
+
+            }
+            else if (tileData.type == "Crosswalk")
+            {
+                switch (tileData.properties.angle % 360)
+                {
+                    case 0:
+                        Instantiate(crosswalk, position, Quaternion.Euler(0, 0, 90));
+                        break;
+                    case 90:
+                        Instantiate(crosswalk, position, Quaternion.Euler(0, 0, 0));
+                        break;
+                }
+                occupiedPositions.Add(position);
             }
         }
+
         // Add grass on the unoccupied tiles
         for (int x = 0; x <= map.properties.size.Xmax; x+= 1)
         {
             for (int y = 0; y <= map.properties.size.Ymax; y+= 1)
             {
+                Vector3 lakeCheck1 = new Vector3((float)1.5, 1, 0);
+                Vector3 houseCheck = new Vector3(1, 1, 0);
                 Vector3 grassPosition = new Vector3(((float)x / 2) + (float)0.25, ((float)y / 2) + (float)0.25, 0);
                 if (!occupiedPositions.Contains(grassPosition))
                 {
                     Instantiate(grass, grassPosition, Quaternion.identity);
                 }
             }
-        }
+        } 
     }
 }

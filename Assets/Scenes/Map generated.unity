@@ -157,7 +157,7 @@ Camera:
   m_GameObject: {fileID: 850847359}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -183,7 +183,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 9.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -208,7 +208,7 @@ Transform:
   m_GameObject: {fileID: 850847359}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 5, z: -10}
+  m_LocalPosition: {x: 19.28, y: 9.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -246,7 +246,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   road: {fileID: 868934505592560937, guid: f718a5d1e3d6ebb469e0c14f4a42f1c4, type: 3}
   sidewalk: {fileID: 1577677163108768236, guid: 3e39dcf059a008b4dbe29a1b2bde2fac, type: 3}
+  sidewalk_left: {fileID: 294810928934071852, guid: 7c50e31c38b2b264b82069d1d94287df, type: 3}
+  sidewalk_right: {fileID: 4521079252922981054, guid: f0343ebe8d592924eb8b4e5f02849d66, type: 3}
+  sidewalk_top: {fileID: 1198450556351354678, guid: 185dcb0080fe3d5439d2da0abb90b87c, type: 3}
+  sidewalk_bottom: {fileID: 4722277919996395746, guid: 26d13f6e63c239944afa3e40dd757b30, type: 3}
+  sidewalk_top_left: {fileID: 7740339064347279635, guid: c1fe71bba550fc5458de2414a72da566, type: 3}
+  sidewalk_top_right: {fileID: 4960707436647444971, guid: d7da7e58fe1995a4a9c65d2485b29690, type: 3}
+  sidewalk_bottom_left: {fileID: 8513578453598622417, guid: bf8879657b226a9458dd1fc883f15ff2, type: 3}
+  sidewalk_bottom_right: {fileID: 47202609330826333, guid: 034a23285d7b4224d90454867d3cb784, type: 3}
+  crosswalk: {fileID: 871977689926458935, guid: 66e1c4e2de52fb14fad517aded1191ee, type: 3}
+  crosswalk_vertical: {fileID: 7372902667375915387, guid: c3453c3f704789f4dacb09e7a3c1482f, type: 3}
   grass: {fileID: 7320759406906686267, guid: effda62322bb9d74fb385540d813d4d8, type: 3}
+  lake: {fileID: 4509486468286722353, guid: c7f27ab035846f6438bc337b79d3c852, type: 3}
+  house_2: {fileID: 974882910452884499, guid: 2aa6f066732a8894fbfce4f02db7917e, type: 3}
 --- !u!212 &1805000539
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -308,7 +320,7 @@ Transform:
   m_GameObject: {fileID: 1805000537}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
+  m_LocalPosition: {x: -1, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

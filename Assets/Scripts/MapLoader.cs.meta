@@ -15,7 +15,10 @@ MonoImporter:
   - sidewalk_bottom_left: {fileID: 8513578453598622417, guid: bf8879657b226a9458dd1fc883f15ff2, type: 3}
   - sidewalk_bottom_right: {fileID: 47202609330826333, guid: 034a23285d7b4224d90454867d3cb784, type: 3}
   - crosswalk: {fileID: 871977689926458935, guid: 66e1c4e2de52fb14fad517aded1191ee, type: 3}
+  - crosswalk_vertical: {fileID: 7372902667375915387, guid: c3453c3f704789f4dacb09e7a3c1482f, type: 3}
   - grass: {fileID: 7320759406906686267, guid: effda62322bb9d74fb385540d813d4d8, type: 3}
+  - lake: {fileID: 4509486468286722353, guid: c7f27ab035846f6438bc337b79d3c852, type: 3}
+  - house_2: {fileID: 974882910452884499, guid: 2aa6f066732a8894fbfce4f02db7917e, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
