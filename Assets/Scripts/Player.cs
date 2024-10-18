@@ -7,12 +7,11 @@ public class Player : MonoBehaviour
 
     public Rigidbody2D rb;
     public float Speed = 5f;
-    Vector2 mouvement;
+    public Vector2 mouvement;
     public Animator animator;
 
     void Update()
     {
-
         mouvement.x = Input.GetAxisRaw("Horizontal");
         mouvement.y = Input.GetAxisRaw("Vertical");
 
