@@ -20,6 +20,8 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject grass;
     [SerializeField] GameObject tree;
     [SerializeField] GameObject lake;
+    [SerializeField] GameObject spawnPoint;
+    [SerializeField] GameObject endPoint;
 
     HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
     public GameObject[] house_array;
@@ -117,6 +119,16 @@ public class MapLoader : MonoBehaviour
             else if (tileData.type == "Lake")
             {
                 Instantiate(lake, position, Quaternion.Euler(0, 0 , 0));
+                occupiedPositions.Add(position);
+            }
+            if(tileData.type == "Start")
+            {
+                Instantiate(spawnPoint, position, Quaternion.Euler(0, 0, 0));
+                occupiedPositions.Add(position);
+            }
+            if (tileData.type == "End")
+            {
+                Instantiate(endPoint, position, Quaternion.Euler(0, 0, 0));
                 occupiedPositions.Add(position);
             }
         }
