@@ -22,6 +22,7 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject lake;
     [SerializeField] GameObject spawnPoint;
     [SerializeField] GameObject endPoint;
+    [SerializeField] GameObject player;
 
     HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
     public GameObject[] house_array;
@@ -124,6 +125,7 @@ public class MapLoader : MonoBehaviour
             if(tileData.type == "Start")
             {
                 Instantiate(spawnPoint, position, Quaternion.Euler(0, 0, 0));
+                Instantiate(player, position, Quaternion.Euler(0, 0, 0));
                 occupiedPositions.Add(position);
             }
             if (tileData.type == "End")
