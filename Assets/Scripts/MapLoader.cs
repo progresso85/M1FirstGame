@@ -18,10 +18,13 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject crosswalk;
     [SerializeField] GameObject crosswalk_vertical;
     [SerializeField] GameObject grass;
+    [SerializeField] GameObject tree;
     [SerializeField] GameObject lake;
-    [SerializeField] GameObject house_2;
+    [SerializeField] GameObject spawnPoint;
+    [SerializeField] GameObject endPoint;
 
     HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
+    public GameObject[] house_array;
 
     void Start()
     {
@@ -40,7 +43,9 @@ public class MapLoader : MonoBehaviour
 
     private void LoadMap(Map map)
     {
-        
+        GameObject[] houses = GameObject.FindGameObjectsWithTag("House");
+        house_array = houses;
+
         foreach (TileData tileData in map.properties.tiles)
         {
             // Choose prefab with its type
@@ -99,6 +104,31 @@ public class MapLoader : MonoBehaviour
                         Instantiate(crosswalk, position, Quaternion.Euler(0, 0, 0));
                         break;
                 }
+                occupiedPositions.Add(position);
+            }
+            else if (tileData.type == "House")
+            {
+                int randomIndex = Random.Range(0, house_array.Length);
+                Instantiate(house_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
+                occupiedPositions.Add(position);
+            }
+            else if (tileData.type == "Tree")
+            {
+                Instantiate(tree, position, Quaternion.Euler(0, 0, 0));
+            }
+            else if (tileData.type == "Lake")
+            {
+                Instantiate(lake, position, Quaternion.Euler(0, 0 , 0));
+                occupiedPositions.Add(position);
+            }
+            if(tileData.type == "Start")
+            {
+                Instantiate(spawnPoint, position, Quaternion.Euler(0, 0, 0));
+                occupiedPositions.Add(position);
+            }
+            if (tileData.type == "End")
+            {
+                Instantiate(endPoint, position, Quaternion.Euler(0, 0, 0));
                 occupiedPositions.Add(position);
             }
         }
