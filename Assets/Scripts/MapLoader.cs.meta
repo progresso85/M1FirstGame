@@ -21,7 +21,8 @@ MonoImporter:
   - lake: {fileID: 5677055874137037872, guid: da48baf08b7686046801e3790386263b, type: 3}
   - spawnPoint: {fileID: 7369650367762995112, guid: f04a4926117f173419f52fe7860249d6, type: 3}
   - endPoint: {fileID: 9026091101277581904, guid: 5bd1dae725bfdfd4d976340514bac1da, type: 3}
-  - player: {fileID: 728496490642090052, guid: 1786189bf4c9bc149be77309a09ee622, type: 3}
+  - character: {fileID: 5708432833005650873, guid: 1786189bf4c9bc149be77309a09ee622, type: 3}
+  - player: {fileID: 5708432833005650873, guid: 1786189bf4c9bc149be77309a09ee622, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

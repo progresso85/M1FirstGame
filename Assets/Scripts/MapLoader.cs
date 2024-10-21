@@ -22,27 +22,14 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject lake;
     [SerializeField] GameObject spawnPoint;
     [SerializeField] GameObject endPoint;
-    [SerializeField] GameObject player;
+    [SerializeField] GameObject character;
+
+    public GameObject player;
 
     HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
     public GameObject[] house_array;
 
-    void Start()
-    {
-        string jsonFilePath = Path.Combine(Application.dataPath, "./Scripts/map.json");
-
-        if (File.Exists(jsonFilePath))
-        {
-            string json = File.ReadAllText(jsonFilePath);
-
-            // Iterate the JSON to save the data in Map object
-            Map map = JsonUtility.FromJson<Map>(json);
-            LoadMap(map);
-        }
-    }
-
-
-    private void LoadMap(Map map)
+    public void LoadMap(Map map)
     {
         GameObject[] houses = GameObject.FindGameObjectsWithTag("House");
         house_array = houses;
@@ -124,8 +111,10 @@ public class MapLoader : MonoBehaviour
             }
             if(tileData.type == "Start")
             {
+
                 Instantiate(spawnPoint, position, Quaternion.Euler(0, 0, 0));
-                Instantiate(player, position, Quaternion.Euler(0, 0, 0));
+                player = Instantiate(character, position, Quaternion.Euler(0, 0, 0));
+                
                 occupiedPositions.Add(position);
             }
             if (tileData.type == "End")

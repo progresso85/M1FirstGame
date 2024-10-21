@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4603773806280361933}
   - component: {fileID: 3229254882210866422}
-  - component: {fileID: 6510317911208424837}
+  - component: {fileID: -5995907137213818514}
   m_Layer: 0
   m_Name: grass
   m_TagString: Tile
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &6510317911208424837
+--- !u!61 &-5995907137213818514
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
