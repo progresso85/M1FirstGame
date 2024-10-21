@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Rigidbody2D rb;
+
     public float normalSpeed = 5f;    
     public float boostSpeed = 10f;   
     public float slowSpeed = 2f;      
@@ -53,6 +54,7 @@ public class Player : MonoBehaviour
         }
 
       
+        
         animator.SetFloat("Horizontal", mouvement.x);
         animator.SetFloat("Vertical", mouvement.y);
         animator.SetFloat("Speed", mouvement.magnitude);
@@ -206,6 +208,7 @@ public class Player : MonoBehaviour
 
         isSlowOnCooldown = false;
         Debug.Log("Cooldown terminé, slow disponible !");
+
     }
 }
 
