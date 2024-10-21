@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -480,6 +481,7 @@ GameObject:
   - component: {fileID: 1805000540}
   - component: {fileID: 1805000539}
   - component: {fileID: 1805000538}
+  - component: {fileID: 1805000541}
   m_Layer: 0
   m_Name: GenerateMap
   m_TagString: Untagged
@@ -516,7 +518,8 @@ MonoBehaviour:
   lake: {fileID: 5677055874137037872, guid: da48baf08b7686046801e3790386263b, type: 3}
   spawnPoint: {fileID: 7369650367762995112, guid: f04a4926117f173419f52fe7860249d6, type: 3}
   endPoint: {fileID: 9026091101277581904, guid: 5bd1dae725bfdfd4d976340514bac1da, type: 3}
-  player: {fileID: 0}
+  character: {fileID: 5708432833005650873, guid: 1786189bf4c9bc149be77309a09ee622, type: 3}
+  player: {fileID: 5708432833005650873, guid: 1786189bf4c9bc149be77309a09ee622, type: 3}
   house_array: []
 --- !u!212 &1805000539
 SpriteRenderer:
@@ -585,6 +588,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1805000541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805000537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385e8daf17f94474e89ba01a88992443, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapLoader: {fileID: 1805000538}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

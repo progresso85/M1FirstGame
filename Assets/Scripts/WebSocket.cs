@@ -4,12 +4,13 @@ using UnityEngine;
 using SocketIOClient;
 using UnityEditor.VersionControl;
 using System;
+using UnityEngine.SceneManagement;
 
 public class WebSocket : MonoBehaviour
 {
 
     private SocketIOUnity socket;
-    [SerializeField] MapLoader mapLoader;
+    public MapLoader mapLoader;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +21,7 @@ public class WebSocket : MonoBehaviour
             ReconnectionAttempts = 5,
             ReconnectionDelay = 5000,
         };
-        socket = new SocketIOUnity("http://localhost:3001/", options);
+        socket = new SocketIOUnity("https://project-maker-staging-c392e96b4ded.herokuapp.com/", options);
 
         socket.OnConnected += (sender, e) => {
             Debug.Log("Connected!");
@@ -36,21 +37,38 @@ public class WebSocket : MonoBehaviour
             socket.On("go", data => {
                 Debug.Log(data);
             });
+
+            socket.On("mapData", data => {
+                SceneManager.LoadScene(1, LoadSceneMode.Single);
+                var map = JsonUtility.FromJson<Map>(data.ToString());
+                mapLoader.LoadMap(map);
+            });
         };
         socket.Connect();
     }
-
+     
     // Update is called once per frame
     void Update()
-    {   
-        Player player = mapLoader.player.gameObject.GetComponent<Player>();
+    {
+        Scene scene = SceneManager.GetActiveScene();
 
-        PlayerPayload payload = new PlayerPayload();
-        payload.x = player.rb.position.x;
-        payload.y = player.rb.position.y;
-        String message = JsonUtility.ToJson(payload);
+        if (scene.name == "Map generated") 
+        {
+            Player player = mapLoader.player.gameObject.GetComponent<Player>();
 
-        socket.Emit("message", message);
+            PlayerPayload payload = new PlayerPayload();
+            payload.x = player.rb.position.x;
+            payload.y = player.rb.position.y;
+            String message = JsonUtility.ToJson(payload);
+
+            socket.Emit("message", message);
+        }
+    }
+
+    public void Ready()
+    {
+        Debug.Log("Ready!");
+        socket.Emit("ready");
     }
 
     void OnDestroy()

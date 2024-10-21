@@ -25261,7 +25261,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1994069072}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Control, Assembly-CSharp
         m_MethodName: SceneLoader
         m_Mode: 1
@@ -31234,7 +31234,7 @@ Camera:
   m_GameObject: {fileID: 1088762701}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -59384,9 +59384,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1994069068}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10a172bb8f77cd4428411e1042f922a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 385e8daf17f94474e89ba01a88992443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapLoader: {fileID: 0}
 --- !u!1001 &1994205111
 PrefabInstance:
   m_ObjectHideFlags: 0
