@@ -60,15 +60,10 @@ public class WebSocket : MonoBehaviour
             payload.x = player.rb.position.x;
             payload.y = player.rb.position.y;
             String message = JsonUtility.ToJson(payload);
+            Debug.Log(message);
 
-            socket.Emit("message", message);
+            socket.Emit("unity-state", message);
         }
-    }
-
-    public void Ready()
-    {
-        Debug.Log("Ready!");
-        socket.Emit("ready");
     }
 
     void OnDestroy()
