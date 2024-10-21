@@ -36,9 +36,6 @@ public class WebSocket : MonoBehaviour
 
             socket.On("go", data => {
                 Debug.Log(data);
-            });
-
-            socket.On("mapData", data => {
                 SceneManager.LoadScene(1, LoadSceneMode.Single);
                 var map = JsonUtility.FromJson<Map>(data.ToString());
                 mapLoader.LoadMap(map);
