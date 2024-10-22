@@ -29777,8 +29777,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 983447590}
-  Speed: 5
-  mouvement: {x: 0, y: 0}
+  normalSpeed: 5
+  boostSpeed: 10
+  slowSpeed: 2
+  boostCastingTime: 2
+  boostDuration: 3
+  boostCooldownTime: 5
+  toggleCastingTime: 1
+  toggleCooldownTime: 3
+  slowCastingTime: 1
+  slowDuration: 4
+  slowCooldownTime: 5
   animator: {fileID: 983447588}
 --- !u!212 &983447592
 SpriteRenderer:
@@ -56700,6 +56709,14 @@ PrefabInstance:
       value: crossing_vertical (12)
       objectReference: {fileID: 0}
     - target: {fileID: 7671100373554977238, guid: c3453c3f704789f4dacb09e7a3c1482f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671100373554977238, guid: c3453c3f704789f4dacb09e7a3c1482f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671100373554977238, guid: c3453c3f704789f4dacb09e7a3c1482f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.25
       objectReference: {fileID: 0}
@@ -63101,6 +63118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapLoader: {fileID: 0}
+  timer: {fileID: 0}
 --- !u!4 &1994195379 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4603773806280361933, guid: effda62322bb9d74fb385540d813d4d8, type: 3}
