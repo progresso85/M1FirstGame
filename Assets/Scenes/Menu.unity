@@ -29790,7 +29790,7 @@ MonoBehaviour:
   slowDuration: 4
   slowCooldownTime: 5
   dashingPower: 10
-  dashingTime: 1
+  dashingTime: 0.2
   dashingCooldown: 3
   animator: {fileID: 983447588}
 --- !u!212 &983447592
