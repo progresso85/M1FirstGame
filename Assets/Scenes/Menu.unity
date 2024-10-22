@@ -29789,6 +29789,9 @@ MonoBehaviour:
   slowCastingTime: 1
   slowDuration: 4
   slowCooldownTime: 5
+  dashingPower: 10
+  dashingTime: 1
+  dashingCooldown: 3
   animator: {fileID: 983447588}
 --- !u!212 &983447592
 SpriteRenderer:

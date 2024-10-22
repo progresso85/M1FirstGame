@@ -36,9 +36,9 @@ public class Player : MonoBehaviour
     // dash
     private bool canDash = true;
     private bool isDashing = false;
-    private float dashingPower = 20f;
-    private float dashingTime = 0.2f;
-    private float dashingCooldown = 3f;
+    public float dashingPower = 20f;
+    public float dashingTime = 0.2f;
+    public float dashingCooldown = 3f;
 
     public Animator animator;
     Vector2 mouvement;
