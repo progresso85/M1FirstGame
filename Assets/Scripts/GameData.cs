@@ -3,11 +3,11 @@ using UnityEngine;
 [System.Serializable]
 public class GameState
 {
-    public string status;
+    public int loops;
     public int timer;
     public int startTimer;
-    public int loops;
-    public Map map;
+    public string status;
+    public int[][] map;
 }
 
 public class Error

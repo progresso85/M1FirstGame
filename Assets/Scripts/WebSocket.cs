@@ -5,6 +5,7 @@ using SocketIOClient;
 using UnityEditor.VersionControl;
 using System;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
 
 public class WebSocket : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class WebSocket : MonoBehaviour
             ReconnectionAttempts = 5,
             ReconnectionDelay = 5000,
         };
-        socket = new SocketIOUnity("https://project-maker-staging-c392e96b4ded.herokuapp.com/", options);
+        socket = new SocketIOUnity("http://localhost:3001/", options);
 
         socket.OnConnected += (sender, e) => 
         {
@@ -52,39 +53,44 @@ public class WebSocket : MonoBehaviour
             payload.x = player.rb.position.x;
             payload.y = player.rb.position.y;
             String message = JsonUtility.ToJson(payload);
-            Debug.Log(message);
 
             socket.Emit("unity-state", message);
         }
 
         socket.On("gamestate", data =>
         {
-            var gamestate = JsonUtility.FromJson<GameState>(data.ToString());
-            var map = JsonUtility.FromJson<Map>(gamestate.map.ToString());
-
-            switch (gamestate.status)
-            {
-                case "WAITING":
-                    if (scene.name != "Menu")
-                    {
-                        SceneManager.LoadScene(0, LoadSceneMode.Single);
-                    }
-                    break;
-                case "STARTING":
-                    if (scene.name != "Map generated")
-                    {
-                        SceneManager.LoadScene(1, LoadSceneMode.Single);
-                        mapLoader.LoadMap(map);
-                    }
-                    break;
-                case "PLAYING":
-                    timer.SetTimer(gamestate.timer);
-                    //mapLoader.UpdateMap(map);
-                    break;
-                case "FINISHED":
-                    // Add victory/lose screen
-                    break;
+            try {
+                Debug.Log(data.ToString());
+                string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
+                GameState gamestate = JsonConvert.DeserializeObject<GameState>(jsonArray[0]);
+                Debug.Log("OK");
+            } catch (Exception e) {
+                Debug.Log("Error");
+                Debug.LogError(e);
             }
+            // switch (gamestate.status)
+            // {
+            //     case "WAITING":
+            //         if (scene.name != "Menu")
+            //         {
+            //             SceneManager.LoadScene(0, LoadSceneMode.Single);
+            //         }
+            //         break;
+            //     case "STARTING":
+            //         if (scene.name != "Map generated")
+            //         {
+            //             SceneManager.LoadScene(1, LoadSceneMode.Single);
+            //             // mapLoader.LoadMap(map);
+            //         }
+            //         break;
+            //     case "PLAYING":
+            //         timer.SetTimer(gamestate.timer);
+            //         //mapLoader.UpdateMap(map);
+            //         break;
+            //     case "FINISHED":
+            //         // Add victory/lose screen
+            //         break;
+            // }
         });
 
         socket.On("error", error =>
