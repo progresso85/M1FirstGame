@@ -5,7 +5,7 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    public TMP_Text timerObject;
+    [SerializeField] private TextMeshProUGUI timerObject;
 
     public void SetTimer(int time)
     {
@@ -13,5 +13,6 @@ public class Timer : MonoBehaviour
         int seconds = time % 60;
         string timer = minutes + " : " + seconds;
         timerObject.text = timer;
+
     }
 }

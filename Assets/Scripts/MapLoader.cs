@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
 public class MapLoader : MonoBehaviour
 {
@@ -28,116 +29,150 @@ public class MapLoader : MonoBehaviour
 
     HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
     public GameObject[] house_array;
+    private Queue<Action> mainThreadActions = new Queue<Action>();
 
-    public void LoadMap(Map map)
+    public void Start()
     {
         GameObject[] houses = GameObject.FindGameObjectsWithTag("House");
         house_array = houses;
+    }
 
-        foreach (TileData tileData in map.properties.tiles)
+    private void Update()
+    {
+        while (mainThreadActions.Count > 0)
         {
-            // Choose prefab with its type
-
-            Vector3 position = tileData.properties.position;
-            position = new Vector3((position.x / 2) + (float)0.25, (position.y / 2) + (float)0.25, position.z);
-
-            if (tileData.type == "Road")
+            Action action;
+            lock (mainThreadActions)
             {
-                Instantiate(road, position, Quaternion.Euler(0, 0, 0));
-                occupiedPositions.Add(position);
+                action = mainThreadActions.Dequeue();
             }
-            else if (tileData.type == "Sidewalk")
-            {
-                switch (tileData.properties.angle % 360)
-                {
-                    case 0:
-                        Instantiate(sidewalk_top, position, Quaternion.Euler(0, 0, 0));
-                        break;
-                    case 45:
-                        Instantiate(sidewalk_top_right, position, Quaternion.Euler(0, 0, 0));
-                        break;
-                    case 90:
-                        Instantiate(sidewalk_right, position, Quaternion.Euler(0, 0, 0));
-                        break;
-                    case 135:
-                        Instantiate(sidewalk_bottom_right, position, Quaternion.Euler(0, 0, 0));
-                        break;
-                    case 180:
-                        Instantiate(sidewalk_bottom, position, Quaternion.Euler(0, 0, 0));
-                        break;
-                    case 225:
-                        Instantiate(sidewalk_bottom_left, position, Quaternion.Euler(0, 0, 0));
-                        break;
-                    case 270:
-                        Instantiate(sidewalk_left, position, Quaternion.Euler(0, 0, 0));
-                        break;
-                    case 315:
-                        Instantiate(sidewalk_top_left, position, Quaternion.Euler(0, 0, 0));
-                        break;
-                    default:
-                        Instantiate(sidewalk, position, Quaternion.Euler(0, 0, 0));
-                        break;
-                }
-                occupiedPositions.Add(position);
-
-            }
-            else if (tileData.type == "Crosswalk")
-            {
-                switch (tileData.properties.angle % 360)
-                {
-                    case 0:
-                        Instantiate(crosswalk, position, Quaternion.Euler(0, 0, 90));
-                        break;
-                    case 90:
-                        Instantiate(crosswalk, position, Quaternion.Euler(0, 0, 0));
-                        break;
-                }
-                occupiedPositions.Add(position);
-            }
-            else if (tileData.type == "House")
-            {
-                int randomIndex = Random.Range(0, house_array.Length);
-                Instantiate(house_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
-                occupiedPositions.Add(position);
-            }
-            else if (tileData.type == "Tree")
-            {
-                Instantiate(tree, position, Quaternion.Euler(0, 0, 0));
-            }
-            else if (tileData.type == "Lake")
-            {
-                Instantiate(lake, position, Quaternion.Euler(0, 0 , 0));
-                occupiedPositions.Add(position);
-            }
-            if(tileData.type == "Start")
-            {
-
-                Instantiate(spawnPoint, position, Quaternion.Euler(0, 0, 0));
-                player = Instantiate(character, position, Quaternion.Euler(0, 0, 0));
-                
-                occupiedPositions.Add(position);
-            }
-            if (tileData.type == "End")
-            {
-                Instantiate(endPoint, position, Quaternion.Euler(0, 0, 0));
-                occupiedPositions.Add(position);
-            }
+            action.Invoke();
         }
+    }
 
-        // Add grass on the unoccupied tiles
-        for (int x = 0; x <= map.properties.size.Xmax; x+= 1)
+    public void LoadMap(UnityMap map)
+    {
+        EnqueueMainThreadAction(() =>
         {
-            for (int y = 0; y <= map.properties.size.Ymax; y+= 1)
+            foreach (TileData tileData in map.unityMap.properties.tiles)
             {
-                Vector3 lakeCheck1 = new Vector3((float)1.5, 1, 0);
-                Vector3 houseCheck = new Vector3(1, 1, 0);
-                Vector3 grassPosition = new Vector3(((float)x / 2) + (float)0.25, ((float)y / 2) + (float)0.25, 0);
-                if (!occupiedPositions.Contains(grassPosition))
+                // Choose prefab with its type
+                Vector3 position = tileData.properties.position;
+                position = new Vector3((position.x / 2) + (float)0.25, (position.y / 2) + (float)0.25, position.z);
+                Debug.Log(position);
+                if (tileData.type == "Road")
                 {
-                    Instantiate(grass, grassPosition, Quaternion.identity);
+                    Instantiate(road, position, Quaternion.Euler(0, 0, 0));
+                    occupiedPositions.Add(position);
+                }
+                else if (tileData.type == "Sidewalk")
+                {
+                    switch (tileData.properties.angle % 360)
+                    {
+                        case 0:
+                            Instantiate(sidewalk_top, position, Quaternion.Euler(0, 0, 0));
+                            break;
+                        case 45:
+                            Instantiate(sidewalk_top_right, position, Quaternion.Euler(0, 0, 0));
+                            break;
+                        case 90:
+                            Instantiate(sidewalk_right, position, Quaternion.Euler(0, 0, 0));
+                            break;
+                        case 135:
+                            Instantiate(sidewalk_bottom_right, position, Quaternion.Euler(0, 0, 0));
+                            break;
+                        case 180:
+                            Instantiate(sidewalk_bottom, position, Quaternion.Euler(0, 0, 0));
+                            break;
+                        case 225:
+                            Instantiate(sidewalk_bottom_left, position, Quaternion.Euler(0, 0, 0));
+                            break;
+                        case 270:
+                            Instantiate(sidewalk_left, position, Quaternion.Euler(0, 0, 0));
+                            break;
+                        case 315:
+                            Instantiate(sidewalk_top_left, position, Quaternion.Euler(0, 0, 0));
+                            break;
+                        default:
+                            Instantiate(sidewalk, position, Quaternion.Euler(0, 0, 0));
+                            break;
+                    }
+                    occupiedPositions.Add(position);
+
+                }
+                else if (tileData.type == "Crosswalk")
+                {
+                    switch (tileData.properties.angle % 360)
+                    {
+                        case 0:
+                            Instantiate(crosswalk, position, Quaternion.Euler(0, 0, 90));
+                            break;
+                        case 90:
+                            Instantiate(crosswalk, position, Quaternion.Euler(0, 0, 0));
+                            break;
+                    }
+                    occupiedPositions.Add(position);
+                }
+                else if (tileData.type == "House")
+                {
+                    try
+                    {
+                        System.Random random = new System.Random();
+                        int randomIndex = random.Next(3);
+                        Instantiate(house_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
+                        occupiedPositions.Add(position);
+                    } catch (Exception e)
+                    {
+                        Debug.LogError(e);
+                    }
+               
+                }
+                else if (tileData.type == "Tree")
+                {
+                    Instantiate(tree, position, Quaternion.Euler(0, 0, 0));
+                }
+                else if (tileData.type == "Lake")
+                {
+                    Instantiate(lake, position, Quaternion.Euler(0, 0 , 0));
+                    occupiedPositions.Add(position);
+                }
+                if(tileData.type == "Start")
+                {
+                    Instantiate(spawnPoint, position, Quaternion.Euler(0, 0, 0));
+                    player = Instantiate(character, position, Quaternion.Euler(0, 0, 0));
+                
+                    occupiedPositions.Add(position);
+                }
+                if (tileData.type == "End")
+                {
+                    Instantiate(endPoint, position, Quaternion.Euler(0, 0, 0));
+                    occupiedPositions.Add(position);
                 }
             }
-        } 
+
+            // Add grass on the unoccupied tiles
+            for (int x = 0; x <= map.unityMap.properties.size.Xmax; x+= 1)
+            {
+                for (int y = 0; y <= map.unityMap.properties.size.Ymax; y+= 1)
+                {
+                    Vector3 lakeCheck1 = new Vector3((float)1.5, 1, 0);
+                    Vector3 houseCheck = new Vector3(1, 1, 0);
+                    Vector3 grassPosition = new Vector3(((float)x / 2) + (float)0.25, ((float)y / 2) + (float)0.25, 0);
+                    if (!occupiedPositions.Contains(grassPosition))
+                    {
+                        Instantiate(grass, grassPosition, Quaternion.identity);
+                    }
+                }
+            }
+        });
+    }
+
+    private void EnqueueMainThreadAction(Action action)
+    {
+        lock (mainThreadActions)
+        {
+            mainThreadActions.Enqueue(action);
+        }
     }
 
 }

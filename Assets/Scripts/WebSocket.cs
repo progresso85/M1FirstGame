@@ -39,58 +39,66 @@ public class WebSocket : MonoBehaviour
         };
         socket.Connect();
     }
+
+    void Awake()
+    {
+        mapLoader = FindObjectOfType<MapLoader>();
+    }
      
     // Update is called once per frame
     void Update()
     {
         Scene scene = SceneManager.GetActiveScene();
 
+        Debug.Log(scene.name);
         if (scene.name == "Map generated") 
         {
+            Debug.Log("ok");
             Player player = mapLoader.player.gameObject.GetComponent<Player>();
 
             PlayerPayload payload = new PlayerPayload();
             payload.x = player.rb.position.x;
             payload.y = player.rb.position.y;
             String message = JsonUtility.ToJson(payload);
-
+            Debug.Log(message);
             socket.Emit("unity-state", message);
         }
 
+        socket.On("go", data =>
+        {
+            string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
+            UnityMap mapArray = JsonConvert.DeserializeObject<UnityMap>(jsonArray[0]);
+            mapLoader.LoadMap(mapArray);
+        });
+
         socket.On("gamestate", data =>
         {
-            try {
-                Debug.Log(data.ToString());
-                string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
-                GameState gamestate = JsonConvert.DeserializeObject<GameState>(jsonArray[0]);
-                Debug.Log("OK");
-            } catch (Exception e) {
-                Debug.Log("Error");
-                Debug.LogError(e);
+            string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
+            GameState gamestate = JsonConvert.DeserializeObject<GameState>(jsonArray[0]);
+
+            switch (gamestate.status)
+            {
+                case "WAITING":
+                    if (scene.name != "Menu")
+                    {
+                        SceneManager.LoadScene(0, LoadSceneMode.Single);
+                    }
+                    break;
+                case "STARTING":
+                    if (scene.name != "Map generated")
+                    {
+                        SceneManager.LoadScene(1, LoadSceneMode.Single);
+                    }
+                    break;
+                case "PLAYING":
+                    //int timePlayed = Convert.ToInt32(Math.Round(gamestate.timer, 0));
+                    //timer.SetTimer(timePlayed);
+                    //mapLoader.UpdateMap(map);
+                    break;
+                case "FINISHED":
+                    // Add victory/lose screen
+                    break;
             }
-            // switch (gamestate.status)
-            // {
-            //     case "WAITING":
-            //         if (scene.name != "Menu")
-            //         {
-            //             SceneManager.LoadScene(0, LoadSceneMode.Single);
-            //         }
-            //         break;
-            //     case "STARTING":
-            //         if (scene.name != "Map generated")
-            //         {
-            //             SceneManager.LoadScene(1, LoadSceneMode.Single);
-            //             // mapLoader.LoadMap(map);
-            //         }
-            //         break;
-            //     case "PLAYING":
-            //         timer.SetTimer(gamestate.timer);
-            //         //mapLoader.UpdateMap(map);
-            //         break;
-            //     case "FINISHED":
-            //         // Add victory/lose screen
-            //         break;
-            // }
         });
 
         socket.On("error", error =>

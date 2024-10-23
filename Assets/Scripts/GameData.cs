@@ -1,10 +1,11 @@
 using UnityEngine;
+using Newtonsoft.Json;
 
 [System.Serializable]
 public class GameState
 {
     public int loops;
-    public int timer;
+    public float timer;
     public int startTimer;
     public string status;
     public int[][] map;
