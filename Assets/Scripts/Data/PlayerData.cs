@@ -1,9 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class PlayerPayload
+public class PlayerData 
 {
-    public float x;
-    public float y;
     public string id;
 }

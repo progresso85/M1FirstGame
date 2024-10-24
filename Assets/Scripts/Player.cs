@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public TrailRenderer tr;
     public AudioManager audioManager;
 
+    public string id;
     public float normalSpeed = 2f;
     public float boostSpeed = 10f;
     public float slowSpeed = 2f;
