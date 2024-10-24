@@ -32,10 +32,6 @@ public class MapLoader : MonoBehaviour
 
     private bool hasGeneratedMap = false;
 
-    public void Start()
-    {
-    }
-
     private void Update()
     {
         if (!hasGeneratedMap)
@@ -43,7 +39,7 @@ public class MapLoader : MonoBehaviour
             LoadMap(GameManager.Instance.mapToGenerate);
             GameManager.Instance.mapToGenerate = null;
             hasGeneratedMap = true;
-        }
+        } 
     }
 
     public void LoadMap(UnityMap map)

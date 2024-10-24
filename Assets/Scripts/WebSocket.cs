@@ -137,6 +137,8 @@ public class WebSocket : MonoBehaviour
                     {
                         SceneManager.LoadScene("Map generated", LoadSceneMode.Single);
                     }
+                    GameManager.Instance.timer = gamestate.timer;
+                    GameManager.Instance.loops = gamestate.loops;
                     break;
                 case "FINISHED":
                     Debug.Log("Finished");
