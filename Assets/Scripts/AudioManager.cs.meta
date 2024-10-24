@@ -3,7 +3,19 @@ guid: 5c49fb055ca374e6884f28a0d22e630a
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - cityAmbiantSound: {fileID: 8300000, guid: db290377937214b90b42c11ccdc15db3, type: 3}
+  - jumpSound: {instanceID: 0}
+  - trapSound: {instanceID: 0}
+  - deathSound: {fileID: 8300000, guid: 70733522ae5d74aa6924a746a7173dfd, type: 3}
+  - dogSound: {fileID: 8300000, guid: 1eafb470df0664483aecc367d672d1cd, type: 3}
+  - eatSound: {fileID: 8300000, guid: a2f0dc8b53e974ab38bdcf752ee22b10, type: 3}
+  - explosionSound: {fileID: 8300000, guid: 22481048000c54c049d2ecc794135d87, type: 3}
+  - hitSound: {fileID: 8300000, guid: 0dfaa1b69ca3d4aa69fc1555c1713dbe, type: 3}
+  - menuSound: {fileID: 8300000, guid: 58cdd5d9fc28a4e38b8bf0db949052d3, type: 3}
+  - timerStressSound: {fileID: 8300000, guid: 26b95a3892fd0496e9898079a5fe29b6, type: 3}
+  - victorySound: {fileID: 8300000, guid: 370c604be86274532adffdf649f9eeb3, type: 3}
+  - walkSound: {fileID: 8300000, guid: 2e115fa75e1474024b12c2442d849dbf, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
