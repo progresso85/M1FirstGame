@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    // Références aux fichiers audio (.wav)
     public AudioClip cityAmbiantSound;
     public AudioClip jumpSound;
     public AudioClip trapSound;
@@ -16,20 +17,21 @@ public class AudioManager : MonoBehaviour
     public AudioClip walkSound;
 
     private AudioSource audioSource;
+    private AudioSource walkAudioSource; // AudioSource séparé pour la marche
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        // Ajouter un AudioSource au GameObject si non présent
+        audioSource = gameObject.AddComponent<AudioSource>();
 
-        // Appeler PlayBackgroundMusic() pour lancer la musique d'ambiance
-        PlayBackgroundMusic();
-    }
+        // Ajouter un autre AudioSource pour les sons de marche
+        walkAudioSource = gameObject.AddComponent<AudioSource>();
 
-    public void PlayBackgroundMusic()
-    {
-        // Exemple : jouer la musique d'ambiance de la ville au démarrage
+        // Exemple de musique d'ambiance à démarrer
         PlayCityAmbiant();
     }
+
+    // Méthodes pour jouer les différents sons
 
     public void PlayCityAmbiant()
     {
@@ -92,10 +94,23 @@ public class AudioManager : MonoBehaviour
         audioSource.PlayOneShot(victorySound);
     }
 
+    // Jouer et arrêter le son de marche
+
     public void PlayWalkSound()
     {
-        audioSource.clip = walkSound;
-        audioSource.loop = true;
-        audioSource.Play();
+        if (!walkAudioSource.isPlaying)
+        {
+            walkAudioSource.clip = walkSound;
+            walkAudioSource.loop = true;  // Faire boucler le son de marche
+            walkAudioSource.Play();
+        }
+    }
+
+    public void StopWalkSound()
+    {
+        if (walkAudioSource.isPlaying)
+        {
+            walkAudioSource.Stop(); // Arrêter le son de marche
+        }
     }
 }

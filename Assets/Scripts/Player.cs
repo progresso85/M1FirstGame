@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public Rigidbody2D rb;
     public TrailRenderer tr;
+    public AudioManager audioManager;
 
     public float normalSpeed = 2f;
     public float boostSpeed = 10f;
@@ -46,11 +47,14 @@ public class Player : MonoBehaviour
     void Start()
     {
         currentSpeed = normalSpeed;
+
+        // Assigner l'AudioManager trouvé dans la scène
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     void Update()
     {
-        
+        // Gérer le mouvement
         if (!isStopped && !isDashing)
         {
             mouvement.x = Input.GetAxisRaw("Horizontal");
@@ -61,30 +65,45 @@ public class Player : MonoBehaviour
             mouvement = Vector2.zero;
         }
 
-       
+        // Détecter le mouvement et jouer le son de marche
+        if (mouvement.magnitude > 0 && !isStopped)
+        {
+            // Le joueur se déplace, jouer le son de marche
+            if (audioManager != null)
+            {
+                audioManager.PlayWalkSound();
+            }
+        }
+        else
+        {
+            // Le joueur s'arrête, arrêter le son de marche
+            if (audioManager != null)
+            {
+                audioManager.StopWalkSound();
+            }
+        }
+
+        // Animation du joueur
         animator.SetFloat("Horizontal", mouvement.x);
         animator.SetFloat("Vertical", mouvement.y);
         animator.SetFloat("Speed", mouvement.magnitude);
 
-       
+        // Gestion des autres actions (boost, slow, dash)
         if (Input.GetKeyDown(KeyCode.X) && !isBoostOnCooldown && !isCastingBoost)
         {
             StartCoroutine(CastBoost());
         }
 
-        
         if (Input.GetKeyDown(KeyCode.V) && !isToggleOnCooldown && !isStopped)
         {
             StartCoroutine(CastToggle());
         }
 
-      
         if (Input.GetKeyDown(KeyCode.C) && !isSlowOnCooldown && !isCastingSlow && !isSlowed)
         {
             StartCoroutine(CastSlow());
         }
 
-        
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             StartCoroutine(Dash());
@@ -93,30 +112,25 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+        // Mouvement du joueur
         if (!isStopped && !isDashing)
         {
             rb.MovePosition(rb.position + mouvement * currentSpeed * Time.fixedDeltaTime);
         }
     }
 
-    
+    // Boost
     IEnumerator CastBoost()
     {
         isCastingBoost = true;
-        Debug.Log("Boost en cours de casting...");
-
         yield return new WaitForSeconds(boostCastingTime);
-
         ActivateBoost();
         isCastingBoost = false;
     }
 
     void ActivateBoost()
     {
-        Debug.Log("Boost activé !");
         currentSpeed = boostSpeed;
-
         StartCoroutine(DisableBoostAfterTime(boostDuration));
         StartCoroutine(BoostCooldown());
     }
@@ -125,43 +139,35 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
-        Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
 
     IEnumerator BoostCooldown()
     {
         isBoostOnCooldown = true;
-        Debug.Log("Cooldown du boost en cours...");
         yield return new WaitForSeconds(boostCooldownTime);
         isBoostOnCooldown = false;
-        Debug.Log("Cooldown terminé, boost disponible !");
     }
 
-    
+    // Toggle
     IEnumerator CastToggle()
     {
-        Debug.Log("Toggle en cours de casting...");
         yield return new WaitForSeconds(toggleCastingTime);
         isStopped = true;
-        Debug.Log("Joueur stoppé !");
         StartCoroutine(DisableToggleAfterCooldown());
     }
 
     IEnumerator DisableToggleAfterCooldown()
     {
         isToggleOnCooldown = true;
-        Debug.Log("Cooldown du toggle en cours...");
         yield return new WaitForSeconds(toggleCooldownTime);
         isStopped = false;
         isToggleOnCooldown = false;
-        Debug.Log("Cooldown terminé, joueur relancé automatiquement !");
     }
 
-    
+    // Slow
     IEnumerator CastSlow()
     {
         isCastingSlow = true;
-        Debug.Log("Slow en cours de casting...");
         yield return new WaitForSeconds(slowCastingTime);
         ActivateSlow();
         isCastingSlow = false;
@@ -169,7 +175,6 @@ public class Player : MonoBehaviour
 
     void ActivateSlow()
     {
-        Debug.Log("Slow activé !");
         currentSpeed = slowSpeed;
         isSlowed = true;
         StartCoroutine(DisableSlowAfterTime(slowDuration));
@@ -181,33 +186,29 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
         isSlowed = false;
-        Debug.Log("Slow terminé, retour à la vitesse normale.");
     }
 
     IEnumerator SlowCooldown()
     {
         isSlowOnCooldown = true;
-        Debug.Log("Cooldown du slow en cours...");
         yield return new WaitForSeconds(slowCooldownTime);
         isSlowOnCooldown = false;
-        Debug.Log("Cooldown terminé, slow disponible !");
     }
 
-    
+    // Dash
     private IEnumerator Dash()
     {
         canDash = false;
         isDashing = true;
-        float originalGravity = rb.gravityScale;  
-        rb.gravityScale = 0f;  
-        rb.velocity = new Vector2(mouvement.x * dashingPower, mouvement.y * dashingPower);  
-        tr.emitting = true;  
-        yield return new WaitForSeconds(dashingTime);  
-        tr.emitting = false;  
-        rb.gravityScale = originalGravity;  
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.velocity = new Vector2(mouvement.x * dashingPower, mouvement.y * dashingPower);
+        tr.emitting = true;
+        yield return new WaitForSeconds(dashingTime);
+        tr.emitting = false;
+        rb.gravityScale = originalGravity;
         isDashing = false;
-        yield return new WaitForSeconds(dashingCooldown);  
+        yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
 }
-
