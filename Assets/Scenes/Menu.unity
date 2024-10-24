@@ -29779,6 +29779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 983447590}
   tr: {fileID: 0}
+  id: 
   normalSpeed: 1
   boostSpeed: 10
   slowSpeed: 2
@@ -43899,6 +43900,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapLoader: {fileID: 0}
   timer: {fileID: 0}
+  playerData:
+    id: 
 --- !u!4 &1413092323
 Transform:
   m_ObjectHideFlags: 0
@@ -52225,13 +52228,13 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4279500978
   m_fontColor: {r: 0.6981132, g: 0, b: 0.07725126, a: 1}
-  m_enableVertexGradient: 0
+  m_enableVertexGradient: 1
   m_colorMode: 3
   m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topLeft: {r: 0.14150941, g: 0.028702382, b: 0.028702382, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 0.1792453, g: 0.04142934, b: 0.04142934, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -62392,6 +62395,7 @@ MonoBehaviour:
           Ymax: 0
         tiles: []
   timer: 0
+  loops: 0
 --- !u!4 &1975163463
 Transform:
   m_ObjectHideFlags: 0

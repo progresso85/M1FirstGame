@@ -110,12 +110,12 @@ public class WebSocket : MonoBehaviour
             Debug.Log(errordata.type + " : " + errordata.message);
         });
 
-        socket.On("unitymap", data =>
+        socket.On("unity:map", data =>
         {
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
-            UnityMap map = JsonConvert.DeserializeObject<UnityMap>(jsonArray[0]);
+            GameManager.Instance.mapToGenerate = JsonConvert.DeserializeObject<UnityMap>(jsonArray[0]);
 
-            NewMap(map);
+            GameManager.Instance.hasRegeneratedMap = true;
         });
 
         socket.On("death", data =>
@@ -174,12 +174,6 @@ public class WebSocket : MonoBehaviour
                     break;
             }
         });
-    }
-
-    public void NewMap(UnityMap map)
-    {
-        SceneManager.LoadScene("Map generated", LoadSceneMode.Single);
-        GameManager.Instance.mapToGenerate = map;
     }
 
     private void EnqueueMainThreadAction(Action action)
