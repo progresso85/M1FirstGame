@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -29777,8 +29776,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 983447590}
-  Speed: 5
-  mouvement: {x: 0, y: 0}
+  normalSpeed: 5
+  boostSpeed: 10
+  slowSpeed: 2
+  boostCastingTime: 2
+  boostDuration: 3
+  boostCooldownTime: 5
+  toggleCastingTime: 1
+  toggleCooldownTime: 3
+  slowCastingTime: 1
+  slowDuration: 4
+  slowCooldownTime: 5
   animator: {fileID: 983447588}
 --- !u!212 &983447592
 SpriteRenderer:

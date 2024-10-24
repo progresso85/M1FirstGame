@@ -11,6 +11,6 @@ public class SpriteSpawner : MonoBehaviour
         renderer.sprite = sprite;
 
         // Positionner le sprite dans la map
-        spriteObject.transform.position = new Vector3(0, 0, 0);  
+        spriteObject.transform.position = new Vector3(2, 0, 0); ;  
     }
 }
