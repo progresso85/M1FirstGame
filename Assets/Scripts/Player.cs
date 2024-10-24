@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public TrailRenderer tr;
 
+    public string id;
     public float normalSpeed = 2f;
     public float boostSpeed = 10f;
     public float slowSpeed = 2f;

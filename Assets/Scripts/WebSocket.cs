@@ -15,6 +15,7 @@ public class WebSocket : MonoBehaviour
     public Timer timer;
     private Scene scene;
     private Queue<Action> mainThreadActions = new Queue<Action>();
+    public PlayerData playerData = null;
 
     void Awake()
     {
@@ -32,7 +33,7 @@ public class WebSocket : MonoBehaviour
             ReconnectionAttempts = 5,
             ReconnectionDelay = 5000,
         };
-        socket = new SocketIOUnity("http://localhost:3001/", options);
+        socket = new SocketIOUnity("https://project-maker-staging-c392e96b4ded.herokuapp.com/", options);
 
         socket.OnConnected += (sender, e) => 
         {
@@ -70,16 +71,27 @@ public class WebSocket : MonoBehaviour
             Player player = mapLoader.player.GetComponent<Player>();
 
             PlayerPayload payload = new PlayerPayload();
-            payload.x = player.rb.position.x;
-            payload.y = player.rb.position.y;
-            Debug.Log(payload.x + ", " + payload.y);
-            String message = JsonUtility.ToJson(payload);
+            payload.x = (player.rb.position.x - (float)0.25)*2;
+            payload.y = (player.rb.position.y - (float)0.25)*2;
+            if (playerData != null) {
+                payload.id = playerData.id;
+            }
 
-            socket.Emit("player:unity", message);
+            String message = JsonUtility.ToJson(payload);
+            Debug.Log(message);
+            socket.Emit("player:position", message);
         }
+
+        socket.On("signupsuccess", data =>
+        {
+            Debug.Log(data);
+            string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
+            playerData = JsonConvert.DeserializeObject<PlayerData>(jsonArray[0]);
+        });
 
         socket.On("go", data =>
         {
+            Debug.Log(data);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
             GameManager.Instance.mapToGenerate = JsonConvert.DeserializeObject<UnityMap>(jsonArray[0]);
         });
@@ -98,12 +110,18 @@ public class WebSocket : MonoBehaviour
             Debug.Log(errordata.type + " : " + errordata.message);
         });
 
-        socket.On("map", data =>
+        socket.On("unitymap", data =>
         {
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
             UnityMap map = JsonConvert.DeserializeObject<UnityMap>(jsonArray[0]);
 
             NewMap(map);
+        });
+
+        socket.On("death", data =>
+        {
+            string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
+            Player player = JsonConvert.DeserializeObject<Player>(jsonArray[0]);
         });
     }
 
