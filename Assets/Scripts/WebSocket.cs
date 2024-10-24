@@ -67,7 +67,6 @@ public class WebSocket : MonoBehaviour
         if (scene.name == "Map generated")
         {
             mapLoader = GameObject.Find("GenerateMap").GetComponent<MapLoader>();
-            Debug.Log(mapLoader);
             Player player = mapLoader.player.GetComponent<Player>();
 
             PlayerPayload payload = new PlayerPayload();
@@ -98,6 +97,14 @@ public class WebSocket : MonoBehaviour
             var errordata = JsonUtility.FromJson<Error>(error.ToString());
             Debug.Log(errordata.type + " : " + errordata.message);
         });
+
+        socket.On("map", data =>
+        {
+            string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
+            UnityMap map = JsonConvert.DeserializeObject<UnityMap>(jsonArray[0]);
+
+            NewMap(map);
+        });
     }
 
     void OnDestroy()
@@ -123,27 +130,36 @@ public class WebSocket : MonoBehaviour
         EnqueueMainThreadAction(() =>
         {
             scene = SceneManager.GetActiveScene();
-            Debug.Log(gamestate.status);
             switch (gamestate.status)
             {
                 case "LOBBY":
                     if (scene.name != "Menu")
                     {
-                        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+                        SceneManager.LoadScene("Menu");
                     }
                     break;
                 case "PLAYING":
                     if (scene.name != "Map generated")
                     {
-                        SceneManager.LoadScene("Map generated", LoadSceneMode.Single);
+                        SceneManager.LoadScene("Map generated");
                     }
                     break;
                 case "FINISHED":
                     Debug.Log("Finished");
+                    if (scene.name != "Menu")
+                    {
+                        SceneManager.LoadScene("Menu");
+                    }
                     // Add victory/lose screen
                     break;
             }
         });
+    }
+
+    public void NewMap(UnityMap map)
+    {
+        SceneManager.LoadScene("Map generated", LoadSceneMode.Single);
+        GameManager.Instance.mapToGenerate = map;
     }
 
     private void EnqueueMainThreadAction(Action action)
