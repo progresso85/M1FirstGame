@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 849119222018646169}
   - component: {fileID: 6354237281593189040}
-  - component: {fileID: 1003571069802399418}
+  - component: {fileID: 8816509582097517619}
   m_Layer: 0
   m_Name: shop
   m_TagString: House
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &1003571069802399418
+--- !u!61 &8816509582097517619
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

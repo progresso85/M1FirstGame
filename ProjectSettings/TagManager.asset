@@ -49,12 +49,9 @@ TagManager:
   - name: Building
     uniqueID: 2699495247
     locked: 0
+  - name: Effect
+    uniqueID: 2574948267
+    locked: 0
   - name: Character
     uniqueID: 237076293
-    locked: 0
-  - name: Tree
-    uniqueID: 4289692007
-    locked: 0
-  - name: Effect
-    uniqueID: 1787804041
     locked: 0

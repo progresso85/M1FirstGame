@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
 public class MapLoader : MonoBehaviour
 {
@@ -22,38 +23,39 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject lake;
     [SerializeField] GameObject spawnPoint;
     [SerializeField] GameObject endPoint;
-    [SerializeField] GameObject player;
+    [SerializeField] GameObject character;
+
+    public GameObject player;
 
     HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
     public GameObject[] house_array;
 
-    void Start()
+    private bool hasGeneratedMap = false;
+
+    public void Start()
     {
-        string jsonFilePath = Path.Combine(Application.dataPath, "./Scripts/map.json");
+    }
 
-        if (File.Exists(jsonFilePath))
+    private void Update()
+    {
+        if (!hasGeneratedMap)
         {
-            string json = File.ReadAllText(jsonFilePath);
-
-            // Iterate the JSON to save the data in Map object
-            Map map = JsonUtility.FromJson<Map>(json);
-            LoadMap(map);
+            LoadMap(GameManager.Instance.mapToGenerate);
+            GameManager.Instance.mapToGenerate = null;
+            hasGeneratedMap = true;
         }
     }
 
-
-    private void LoadMap(Map map)
+    public void LoadMap(UnityMap map)
     {
-        GameObject[] houses = GameObject.FindGameObjectsWithTag("House");
-        house_array = houses;
+        GameManager.Instance.mapToGenerate = null;
 
-        foreach (TileData tileData in map.properties.tiles)
+        Debug.Log("Chargemnt de la map...");
+        foreach (TileData tileData in map.unityMap.properties.tiles)
         {
             // Choose prefab with its type
-
             Vector3 position = tileData.properties.position;
             position = new Vector3((position.x / 2) + (float)0.25, (position.y / 2) + (float)0.25, position.z);
-
             if (tileData.type == "Road")
             {
                 Instantiate(road, position, Quaternion.Euler(0, 0, 0));
@@ -109,9 +111,18 @@ public class MapLoader : MonoBehaviour
             }
             else if (tileData.type == "House")
             {
-                int randomIndex = Random.Range(0, house_array.Length);
-                Instantiate(house_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
-                occupiedPositions.Add(position);
+                try
+                {
+                    System.Random random = new System.Random();
+                    int randomIndex = random.Next(3);
+                    Instantiate(house_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
+                    occupiedPositions.Add(position);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
+                }
+
             }
             else if (tileData.type == "Tree")
             {
@@ -119,13 +130,15 @@ public class MapLoader : MonoBehaviour
             }
             else if (tileData.type == "Lake")
             {
-                Instantiate(lake, position, Quaternion.Euler(0, 0 , 0));
+                Instantiate(lake, position, Quaternion.Euler(0, 0, 0));
                 occupiedPositions.Add(position);
             }
-            if(tileData.type == "Start")
+            if (tileData.type == "Start")
             {
                 Instantiate(spawnPoint, position, Quaternion.Euler(0, 0, 0));
-                Instantiate(player, position, Quaternion.Euler(0, 0, 0));
+                player = Instantiate(character, position, Quaternion.Euler(0, 0, 0));
+                DontDestroyOnLoad(player);
+
                 occupiedPositions.Add(position);
             }
             if (tileData.type == "End")
@@ -136,9 +149,9 @@ public class MapLoader : MonoBehaviour
         }
 
         // Add grass on the unoccupied tiles
-        for (int x = 0; x <= map.properties.size.Xmax; x+= 1)
+        for (int x = 0; x <= map.unityMap.properties.size.Xmax; x += 1)
         {
-            for (int y = 0; y <= map.properties.size.Ymax; y+= 1)
+            for (int y = 0; y <= map.unityMap.properties.size.Ymax; y += 1)
             {
                 Vector3 lakeCheck1 = new Vector3((float)1.5, 1, 0);
                 Vector3 houseCheck = new Vector3(1, 1, 0);
@@ -148,6 +161,6 @@ public class MapLoader : MonoBehaviour
                     Instantiate(grass, grassPosition, Quaternion.identity);
                 }
             }
-        } 
+        }
     }
 }

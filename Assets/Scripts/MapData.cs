@@ -39,3 +39,9 @@ public class TileProperties
     public Vector3 position;
     public int angle;
 }
+
+[System.Serializable]
+public class UnityMap
+{
+    public Map unityMap;
+}

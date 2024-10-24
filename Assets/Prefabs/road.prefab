@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6153441697002925153}
   - component: {fileID: 832767338063676662}
   - component: {fileID: 8699673695111420783}
-  - component: {fileID: -6425931535704289561}
+  - component: {fileID: -4016281170304397819}
   m_Layer: 0
   m_Name: road
   m_TagString: Tile
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4c61145f6f2a194ca7c54ae35d5c84c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &-6425931535704289561
+--- !u!61 &-4016281170304397819
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
