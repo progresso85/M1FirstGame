@@ -52,9 +52,10 @@ public class MapLoader : MonoBehaviour
             GameManager.Instance.hasRegeneratedMap = false;
         }
         ItemMap(GameManager.Instance.items);
-        if (isDead)
+        if (GameManager.Instance.isDead)
         {
             PlayerToSpawn(GameManager.Instance.playerPosition);
+            GameManager.Instance.isDead = false;
         }
     }
 
@@ -185,11 +186,11 @@ public class MapLoader : MonoBehaviour
 
     public void ItemMap(Item[] items)
     {
+        ClearItems();
         foreach (Item item in items)
         {
             Vector3 position = item.coords;
             position = new Vector3((position.y / 2) + (float)0.25, (position.x / 2) + (float)0.25, position.z);
-            Debug.Log(position);
             switch(item.type)
             {
                 case "COIN":
@@ -210,8 +211,28 @@ public class MapLoader : MonoBehaviour
         }
     }
 
+    private void ClearItems()
+    {
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Coin"))
+        {
+            Destroy(item);
+        }
+
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Bomb"))
+        {
+            Destroy(item);
+        }
+
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Wall"))
+        {
+            Destroy(item);
+        }
+    }
+
     public void PlayerToSpawn(Vector3 position)
     {
+        position = new Vector3((position.x / 2) + (float)0.25, (position.y / 2) + (float)0.25, position.z);
+        Debug.Log(position);
         if (player != null)
         {
             

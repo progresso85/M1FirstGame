@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
     public float boostDuration = 5f;
     public float toggleDuration = 5f;
     public float slowDuration = 5f;
+    public float slowCastingTime = 1f;
+    public float boostCastingTime = 1f;
+    public float toggleCastingTime = 1f;
 
     private bool isStopped = false;
     private bool isSlowed = false;
@@ -84,15 +87,6 @@ public class Player : MonoBehaviour
         Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
 
-    IEnumerator BoostCooldown()
-    {
-        isBoostOnCooldown = true;
-        Debug.Log("Cooldown du boost en cours...");
-        yield return new WaitForSeconds(boostCooldownTime);
-        isBoostOnCooldown = false;
-        Debug.Log("Cooldown terminé, boost disponible !");
-    }
-
     IEnumerator DisableToggleAfterCooldown()
     {
         yield return new WaitForSeconds(toggleDuration);
@@ -139,16 +133,6 @@ public class Player : MonoBehaviour
         isDrunk = false;
         Debug.Log("Vous n'êtes plus bourré !");
     }
-
-    IEnumerator SlowCooldown()
-    {
-        isSlowOnCooldown = true;
-        Debug.Log("Cooldown du slow en cours...");
-        yield return new WaitForSeconds(slowCooldownTime);
-        isSlowOnCooldown = false;
-        Debug.Log("Cooldown terminé, slow disponible !");
-    }
-
     
     private IEnumerator Dash()
     {
