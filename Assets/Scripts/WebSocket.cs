@@ -78,7 +78,6 @@ public class WebSocket : MonoBehaviour
             }
 
             String message = JsonUtility.ToJson(payload);
-            Debug.Log(message);
             socket.Emit("player:position", message);
         }
 
@@ -98,7 +97,6 @@ public class WebSocket : MonoBehaviour
 
         socket.On("gamestate", data =>
         {
-            Debug.Log(data);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
             GameState gamestate = JsonConvert.DeserializeObject<GameState>(jsonArray[0]);
 
@@ -119,17 +117,18 @@ public class WebSocket : MonoBehaviour
             GameManager.Instance.hasRegeneratedMap = true;
         });
 
-        socket.On("death", data =>
+        socket.On("unity:position", data =>
         {
+            Debug.Log(data);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
-            Player player = JsonConvert.DeserializeObject<Player>(jsonArray[0]);
+            Vector3 position = JsonConvert.DeserializeObject<Vector3>(jsonArray[0]);
         });
 
         socket.On("cast:spell", spell =>
         {
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(spell.ToString());
-            GameManager.Instance.spell = JsonConvert.DeserializeObject<string>(jsonArray[0]);
-        }
+            GameManager.Instance.spell = JsonConvert.DeserializeObject<Spell>(jsonArray[0]);
+        });
     }
 
     void OnDestroy()
@@ -168,7 +167,6 @@ public class WebSocket : MonoBehaviour
                     {
                         SceneManager.LoadScene("Map generated");
                     }
-                    Debug.Log(gamestate.items);
                     GameManager.Instance.items = gamestate.items;
                     GameManager.Instance.timer = gamestate.timer;
                     GameManager.Instance.loops = gamestate.loops;

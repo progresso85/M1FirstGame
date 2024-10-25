@@ -103,9 +103,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1938375286474582692}
   tr: {fileID: 1898293314952815151}
+  id: 
   normalSpeed: 2
-  boostSpeed: 10
-  slowSpeed: 2
+  boostSpeed: 5
+  slowSpeed: 1
   boostCastingTime: 2
   boostDuration: 3
   boostCooldownTime: 5
