@@ -7,32 +7,20 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public TrailRenderer tr;
 
-    public string id;
     public float normalSpeed = 2f;
     public float boostSpeed = 10f;
     public float slowSpeed = 2f;
     private float currentSpeed;
 
-    // boost (X)
-    public float boostCastingTime = 2f;
-    public float boostDuration = 3f;
-    public float boostCooldownTime = 5f;
-    private bool isBoostOnCooldown = false;
-    private bool isCastingBoost = false;
+    
+    public float boostDuration = 5f;
+    public float toggleDuration = 5f;
+    public float slowDuration = 5f;
 
-    // toggle (V)
-    public float toggleCastingTime = 1f;
-    public float toggleCooldownTime = 3f;
-    private bool isToggleOnCooldown = false;
     private bool isStopped = false;
-
-    // slow (C)
-    public float slowCastingTime = 1f;
-    public float slowDuration = 4f;
-    public float slowCooldownTime = 5f;
-    private bool isSlowOnCooldown = false;
-    private bool isCastingSlow = false;
     private bool isSlowed = false;
+    private bool isCastingBoost = false;
+    private bool isCastingSlow = false;
 
     // dash
     private bool canDash = true;
@@ -62,25 +50,25 @@ public class Player : MonoBehaviour
             mouvement = Vector2.zero;
         }
 
-       
+        
         animator.SetFloat("Horizontal", mouvement.x);
         animator.SetFloat("Vertical", mouvement.y);
         animator.SetFloat("Speed", mouvement.magnitude);
 
-       
-        if (Input.GetKeyDown(KeyCode.X) && !isBoostOnCooldown && !isCastingBoost)
+        
+        if (Input.GetKeyDown(KeyCode.X) && !isCastingBoost)
         {
             StartCoroutine(CastBoost());
         }
 
         
-        if (Input.GetKeyDown(KeyCode.V) && !isToggleOnCooldown && !isStopped)
+        if (Input.GetKeyDown(KeyCode.V) && !isStopped)
         {
             StartCoroutine(CastToggle());
         }
 
-      
-        if (Input.GetKeyDown(KeyCode.C) && !isSlowOnCooldown && !isCastingSlow && !isSlowed)
+        
+        if (Input.GetKeyDown(KeyCode.C) && !isCastingSlow && !isSlowed)
         {
             StartCoroutine(CastSlow());
         }
@@ -94,21 +82,19 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+       
         if (!isStopped && !isDashing)
         {
             rb.MovePosition(rb.position + mouvement * currentSpeed * Time.fixedDeltaTime);
         }
     }
 
-    
+    // Boost
     IEnumerator CastBoost()
     {
         isCastingBoost = true;
         Debug.Log("Boost en cours de casting...");
-
-        yield return new WaitForSeconds(boostCastingTime);
-
+        yield return new WaitForSeconds(0.5f); 
         ActivateBoost();
         isCastingBoost = false;
     }
@@ -117,53 +103,39 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Boost activé !");
         currentSpeed = boostSpeed;
-
-        StartCoroutine(DisableBoostAfterTime(boostDuration));
-        StartCoroutine(BoostCooldown());
+        StartCoroutine(DisableBoostAfterDuration());
     }
 
-    IEnumerator DisableBoostAfterTime(float duration)
+    IEnumerator DisableBoostAfterDuration()
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(boostDuration);
         currentSpeed = normalSpeed;
         Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
 
-    IEnumerator BoostCooldown()
-    {
-        isBoostOnCooldown = true;
-        Debug.Log("Cooldown du boost en cours...");
-        yield return new WaitForSeconds(boostCooldownTime);
-        isBoostOnCooldown = false;
-        Debug.Log("Cooldown terminé, boost disponible !");
-    }
-
-    
+    // Toggle Stop
     IEnumerator CastToggle()
     {
         Debug.Log("Toggle en cours de casting...");
-        yield return new WaitForSeconds(toggleCastingTime);
+        yield return new WaitForSeconds(0.5f); 
         isStopped = true;
         Debug.Log("Joueur stoppé !");
-        StartCoroutine(DisableToggleAfterCooldown());
+        StartCoroutine(DisableToggleAfterDuration());
     }
 
-    IEnumerator DisableToggleAfterCooldown()
+    IEnumerator DisableToggleAfterDuration()
     {
-        isToggleOnCooldown = true;
-        Debug.Log("Cooldown du toggle en cours...");
-        yield return new WaitForSeconds(toggleCooldownTime);
+        yield return new WaitForSeconds(toggleDuration);
         isStopped = false;
-        isToggleOnCooldown = false;
-        Debug.Log("Cooldown terminé, joueur relancé automatiquement !");
+        Debug.Log("Joueur relancé automatiquement !");
     }
 
-    
+    // Slow
     IEnumerator CastSlow()
     {
         isCastingSlow = true;
         Debug.Log("Slow en cours de casting...");
-        yield return new WaitForSeconds(slowCastingTime);
+        yield return new WaitForSeconds(0.5f); 
         ActivateSlow();
         isCastingSlow = false;
     }
@@ -173,42 +145,33 @@ public class Player : MonoBehaviour
         Debug.Log("Slow activé !");
         currentSpeed = slowSpeed;
         isSlowed = true;
-        StartCoroutine(DisableSlowAfterTime(slowDuration));
-        StartCoroutine(SlowCooldown());
+        StartCoroutine(DisableSlowAfterDuration());
     }
 
-    IEnumerator DisableSlowAfterTime(float duration)
+    IEnumerator DisableSlowAfterDuration()
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(slowDuration);
         currentSpeed = normalSpeed;
         isSlowed = false;
         Debug.Log("Slow terminé, retour à la vitesse normale.");
     }
 
-    IEnumerator SlowCooldown()
-    {
-        isSlowOnCooldown = true;
-        Debug.Log("Cooldown du slow en cours...");
-        yield return new WaitForSeconds(slowCooldownTime);
-        isSlowOnCooldown = false;
-        Debug.Log("Cooldown terminé, slow disponible !");
-    }
-
-    
+    // Dash
     private IEnumerator Dash()
     {
         canDash = false;
         isDashing = true;
-        float originalGravity = rb.gravityScale;  
-        rb.gravityScale = 0f;  
-        rb.velocity = new Vector2(mouvement.x * dashingPower, mouvement.y * dashingPower);  
-        tr.emitting = true;  
-        yield return new WaitForSeconds(dashingTime);  
-        tr.emitting = false;  
-        rb.gravityScale = originalGravity;  
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.velocity = new Vector2(mouvement.x * dashingPower, mouvement.y * dashingPower);
+        tr.emitting = true;
+        yield return new WaitForSeconds(dashingTime);
+        tr.emitting = false;
+        rb.gravityScale = originalGravity;
         isDashing = false;
-        yield return new WaitForSeconds(dashingCooldown);  
+        yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
 }
+
 
