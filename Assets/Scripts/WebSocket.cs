@@ -83,14 +83,12 @@ public class WebSocket : MonoBehaviour
 
         socket.On("signupsuccess", data =>
         {
-            Debug.Log(data);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
             playerData = JsonConvert.DeserializeObject<PlayerData>(jsonArray[0]);
         });
 
         socket.On("go", data =>
         {
-            Debug.Log(data);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
             GameManager.Instance.mapToGenerate = JsonConvert.DeserializeObject<UnityMap>(jsonArray[0]);
         });
@@ -119,9 +117,9 @@ public class WebSocket : MonoBehaviour
 
         socket.On("unity:position", data =>
         {
-            Debug.Log(data);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
-            Vector3 position = JsonConvert.DeserializeObject<Vector3>(jsonArray[0]);
+            GameManager.Instance.playerPosition = JsonConvert.DeserializeObject<Vector3>(jsonArray[0]);
+            GameManager.Instance.isDead = true;
         });
 
         socket.On("cast:spell", spell =>

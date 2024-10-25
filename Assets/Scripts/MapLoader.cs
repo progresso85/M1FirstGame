@@ -49,6 +49,10 @@ public class MapLoader : MonoBehaviour
             GameManager.Instance.hasRegeneratedMap = false;
         }
         ItemMap(GameManager.Instance.items);
+        if (isDead)
+        {
+            PlayerToSpawn(GameManager.Instance.playerPosition);
+        }
     }
 
     public void LoadMap(UnityMap map)
@@ -116,32 +120,22 @@ public class MapLoader : MonoBehaviour
             }
             else if (tileData.type == "House")
             {
-                try
-                {
-                    System.Random random = new System.Random();
-                    int randomIndex = random.Next(5);
-                    Instantiate(house_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
-                    occupiedPositions.Add(position);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e);
-                }
+
+                System.Random random = new System.Random();
+                int randomIndex = random.Next(5);
+                Instantiate(house_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
+                occupiedPositions.Add(position);
+
 
             }
             else if (tileData.type == "Tree")
             {
-                try
-                {
-                    System.Random random = new System.Random();
-                    int randomIndex = random.Next(2);
-                    Instantiate(tree_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
-                    occupiedPositions.Add(position);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e);
-                }
+
+                System.Random random = new System.Random();
+                int randomIndex = random.Next(2);
+                Instantiate(tree_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
+                occupiedPositions.Add(position);
+
             }
             else if (tileData.type == "Lake")
             {
@@ -197,6 +191,19 @@ public class MapLoader : MonoBehaviour
                 case "Type de l'item":
                     break;
             }
+        }
+    }
+
+    public void PlayerToSpawn(Vector3 position)
+    {
+        if (player != null)
+        {
+            
+            player.transform.position = position;
+        }
+        else
+        {
+            Debug.Log("Le joueur n'existe pas !");
         }
     }
 }
