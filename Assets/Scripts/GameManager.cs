@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public float timer = 0;
     public int loops = 0;
     public bool hasRegeneratedMap = false;
+    public Item[] items;
+    public Spell spell;
 
     private static GameManager instance = null;
     public static GameManager Instance => instance;

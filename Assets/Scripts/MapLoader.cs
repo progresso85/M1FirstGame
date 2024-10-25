@@ -21,16 +21,17 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject crosswalk;
     [SerializeField] GameObject crosswalk_vertical;
     [SerializeField] GameObject grass;
-    [SerializeField] GameObject tree;
+    [SerializeField] GameObject[] tree_array;
     [SerializeField] GameObject lake;
     [SerializeField] GameObject spawnPoint;
     [SerializeField] GameObject endPoint;
     [SerializeField] GameObject character;
+    [SerializeField] GameObject[] house_array;
 
     public GameObject player;
 
     HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
-    public GameObject[] house_array;
+   
 
     private bool hasGeneratedMap = false;
 
@@ -47,6 +48,7 @@ public class MapLoader : MonoBehaviour
             NewMap(GameManager.Instance.mapToGenerate);
             GameManager.Instance.hasRegeneratedMap = false;
         }
+        ItemMap(GameManager.Instance.items);
     }
 
     public void LoadMap(UnityMap map)
@@ -117,7 +119,7 @@ public class MapLoader : MonoBehaviour
                 try
                 {
                     System.Random random = new System.Random();
-                    int randomIndex = random.Next(3);
+                    int randomIndex = random.Next(5);
                     Instantiate(house_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
                     occupiedPositions.Add(position);
                 }
@@ -129,7 +131,17 @@ public class MapLoader : MonoBehaviour
             }
             else if (tileData.type == "Tree")
             {
-                Instantiate(tree, position, Quaternion.Euler(0, 0, 0));
+                try
+                {
+                    System.Random random = new System.Random();
+                    int randomIndex = random.Next(2);
+                    Instantiate(tree_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
+                    occupiedPositions.Add(position);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
+                }
             }
             else if (tileData.type == "Lake")
             {
@@ -172,5 +184,19 @@ public class MapLoader : MonoBehaviour
         SceneManager.LoadScene(1);
         Destroy(player);
         GameManager.Instance.mapToGenerate = map;
+    }
+
+    public void ItemMap(Item[] items)
+    {
+        foreach (Item item in items)
+        {
+            Vector3 position = item.coords;
+            position = new Vector3((position.x / 2) + (float)0.25, (position.y / 2) + (float)0.25, position.z);
+            switch(item.type)
+            {
+                case "Type de l'item":
+                    break;
+            }
+        }
     }
 }
