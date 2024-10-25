@@ -129,7 +129,7 @@ public class WebSocket : MonoBehaviour
         {
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(spell.ToString());
             GameManager.Instance.spell = JsonConvert.DeserializeObject<string>(jsonArray[0]);
-        }
+        });
     }
 
     void OnDestroy()

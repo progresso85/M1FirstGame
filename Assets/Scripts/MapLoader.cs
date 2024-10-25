@@ -27,6 +27,9 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject endPoint;
     [SerializeField] GameObject character;
     [SerializeField] GameObject[] house_array;
+    [SerializeField] GameObject Bombe;
+    [SerializeField] GameObject Coin;
+    [SerializeField] GameObject Wall;
 
     public GameObject player;
 
@@ -194,7 +197,19 @@ public class MapLoader : MonoBehaviour
             position = new Vector3((position.x / 2) + (float)0.25, (position.y / 2) + (float)0.25, position.z);
             switch(item.type)
             {
-                case "Type de l'item":
+                case "COIN":
+                    Instantiate(Coin, position, Quaternion.Euler(0, 0, 0));
+
+                    break;
+
+                case "Bombe":
+                    Instantiate(Bombe, position, Quaternion.Euler(0, 0, 0));
+
+                    break;
+
+                case "Wall":
+                    Instantiate(Wall, position, Quaternion.Euler(0, 0, 0));
+
                     break;
             }
         }
