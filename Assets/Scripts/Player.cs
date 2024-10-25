@@ -55,24 +55,7 @@ public class Player : MonoBehaviour
         animator.SetFloat("Vertical", mouvement.y);
         animator.SetFloat("Speed", mouvement.magnitude);
 
-        
-        if (Input.GetKeyDown(KeyCode.X) && !isCastingBoost)
-        {
-            StartCoroutine(CastBoost());
-        }
-
-        
-        if (Input.GetKeyDown(KeyCode.V) && !isStopped)
-        {
-            StartCoroutine(CastToggle());
-        }
-
-        
-        if (Input.GetKeyDown(KeyCode.C) && !isCastingSlow && !isSlowed)
-        {
-            StartCoroutine(CastSlow());
-        }
-
+        StartCoroutine(SpellCast(GameManager.Instance.spell));
         
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
@@ -89,55 +72,27 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Boost
-    IEnumerator CastBoost()
-    {
-        isCastingBoost = true;
-        Debug.Log("Boost en cours de casting...");
-        yield return new WaitForSeconds(0.5f); 
-        ActivateBoost();
-        isCastingBoost = false;
-    }
-
-    void ActivateBoost()
-    {
-        Debug.Log("Boost activé !");
-        currentSpeed = boostSpeed;
-        StartCoroutine(DisableBoostAfterDuration());
-    }
-
-    IEnumerator DisableBoostAfterDuration()
+    IEnumerator DisableBoostAfterTime(float duration)
     {
         yield return new WaitForSeconds(boostDuration);
         currentSpeed = normalSpeed;
         Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
 
-    // Toggle Stop
-    IEnumerator CastToggle()
+    IEnumerator BoostCooldown()
     {
-        Debug.Log("Toggle en cours de casting...");
-        yield return new WaitForSeconds(0.5f); 
-        isStopped = true;
-        Debug.Log("Joueur stoppé !");
-        StartCoroutine(DisableToggleAfterDuration());
+        isBoostOnCooldown = true;
+        Debug.Log("Cooldown du boost en cours...");
+        yield return new WaitForSeconds(boostCooldownTime);
+        isBoostOnCooldown = false;
+        Debug.Log("Cooldown terminé, boost disponible !");
     }
 
-    IEnumerator DisableToggleAfterDuration()
+    IEnumerator DisableToggleAfterCooldown()
     {
         yield return new WaitForSeconds(toggleDuration);
         isStopped = false;
         Debug.Log("Joueur relancé automatiquement !");
-    }
-
-    // Slow
-    IEnumerator CastSlow()
-    {
-        isCastingSlow = true;
-        Debug.Log("Slow en cours de casting...");
-        yield return new WaitForSeconds(0.5f); 
-        ActivateSlow();
-        isCastingSlow = false;
     }
 
     void ActivateSlow()
@@ -148,7 +103,17 @@ public class Player : MonoBehaviour
         StartCoroutine(DisableSlowAfterDuration());
     }
 
-    IEnumerator DisableSlowAfterDuration()
+    void ActivateBoost()
+    {
+
+        Debug.Log("Boost activé !");
+        currentSpeed = boostSpeed;
+
+        StartCoroutine(DisableBoostAfterTime(boostDuration));
+        StartCoroutine(BoostCooldown());
+    }
+
+    IEnumerator DisableSlowAfterTime(float duration)
     {
         yield return new WaitForSeconds(slowDuration);
         currentSpeed = normalSpeed;
@@ -172,6 +137,45 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
+
+    public IEnumerator SpellCast(Spell spell)
+    {
+        Debug.Log(spell.name);
+        switch (spell.name)
+        {
+            case "Slow Mode":
+                isCastingSlow = true;
+                spell.name = "";
+                Debug.Log("Slow en cours de casting...");
+                yield return new WaitForSeconds(slowCastingTime);
+                ActivateSlow();
+                isCastingSlow = false;
+                break;
+            case "Quickness":
+                isCastingBoost = true;
+                spell.name = "";
+                Debug.Log("Boost en cours de casting...");
+
+                yield return new WaitForSeconds(boostCastingTime);
+                ActivateBoost();
+                isCastingBoost = false;
+                break;
+            case "Sudden Stop":
+                Debug.Log("Toggle en cours de casting...");
+                spell.name = "";
+                yield return new WaitForSeconds(toggleCastingTime);
+                isStopped = true;
+                Debug.Log("Joueur stoppé !");
+                StartCoroutine(DisableToggleAfterCooldown());
+                break;
+        }
+    }
+}
+
+[System.Serializable]
+public class Spell
+{
+    public string name;
 }
 
 
