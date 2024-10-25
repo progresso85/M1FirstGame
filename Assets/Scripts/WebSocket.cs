@@ -98,6 +98,7 @@ public class WebSocket : MonoBehaviour
 
         socket.On("gamestate", data =>
         {
+            Debug.Log(data);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
             GameState gamestate = JsonConvert.DeserializeObject<GameState>(jsonArray[0]);
 
@@ -161,6 +162,8 @@ public class WebSocket : MonoBehaviour
                     {
                         SceneManager.LoadScene("Map generated");
                     }
+                    Debug.Log(gamestate.items);
+                    GameManager.Instance.items = gamestate.items;
                     GameManager.Instance.timer = gamestate.timer;
                     GameManager.Instance.loops = gamestate.loops;
                     break;
