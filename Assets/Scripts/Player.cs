@@ -67,6 +67,7 @@ public class Player : MonoBehaviour
         animator.SetFloat("Vertical", mouvement.y);
         animator.SetFloat("Speed", mouvement.magnitude);
 
+        SpellCast(GameManager.Instance.spell);
        
         if (Input.GetKeyDown(KeyCode.X) && !isBoostOnCooldown && !isCastingBoost)
         {
@@ -209,6 +210,15 @@ public class Player : MonoBehaviour
         isDashing = false;
         yield return new WaitForSeconds(dashingCooldown);  
         canDash = true;
+    }
+
+    public void SpellCast(string spell)
+    {
+        switch (spell)
+        {
+            case "Slow":
+                break;
+        }
     }
 }
 

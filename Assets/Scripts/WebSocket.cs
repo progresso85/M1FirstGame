@@ -124,6 +124,12 @@ public class WebSocket : MonoBehaviour
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
             Player player = JsonConvert.DeserializeObject<Player>(jsonArray[0]);
         });
+
+        socket.On("cast:spell", spell =>
+        {
+            string[] jsonArray = JsonConvert.DeserializeObject<string[]>(spell.ToString());
+            GameManager.Instance.spell = JsonConvert.DeserializeObject<string>(jsonArray[0]);
+        }
     }
 
     void OnDestroy()
