@@ -7,32 +7,20 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public TrailRenderer tr;
 
-    public string id;
     public float normalSpeed = 2f;
     public float boostSpeed = 10f;
     public float slowSpeed = 2f;
     private float currentSpeed;
 
-    // boost (X)
-    public float boostCastingTime = 2f;
-    public float boostDuration = 3f;
-    public float boostCooldownTime = 5f;
-    private bool isBoostOnCooldown = false;
-    private bool isCastingBoost = false;
+    
+    public float boostDuration = 5f;
+    public float toggleDuration = 5f;
+    public float slowDuration = 5f;
 
-    // toggle (V)
-    public float toggleCastingTime = 1f;
-    public float toggleCooldownTime = 3f;
-    private bool isToggleOnCooldown = false;
     private bool isStopped = false;
-
-    // slow (C)
-    public float slowCastingTime = 1f;
-    public float slowDuration = 4f;
-    public float slowCooldownTime = 5f;
-    private bool isSlowOnCooldown = false;
-    private bool isCastingSlow = false;
     private bool isSlowed = false;
+    private bool isCastingBoost = false;
+    private bool isCastingSlow = false;
 
     // dash
     private bool canDash = true;
@@ -62,7 +50,7 @@ public class Player : MonoBehaviour
             mouvement = Vector2.zero;
         }
 
-       
+        
         animator.SetFloat("Horizontal", mouvement.x);
         animator.SetFloat("Vertical", mouvement.y);
         animator.SetFloat("Speed", mouvement.magnitude);
@@ -77,7 +65,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+       
         if (!isStopped && !isDashing)
         {
             rb.MovePosition(rb.position + mouvement * currentSpeed * Time.fixedDeltaTime);
@@ -86,7 +74,7 @@ public class Player : MonoBehaviour
 
     IEnumerator DisableBoostAfterTime(float duration)
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(boostDuration);
         currentSpeed = normalSpeed;
         Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
@@ -102,12 +90,9 @@ public class Player : MonoBehaviour
 
     IEnumerator DisableToggleAfterCooldown()
     {
-        isToggleOnCooldown = true;
-        Debug.Log("Cooldown du toggle en cours...");
-        yield return new WaitForSeconds(toggleCooldownTime);
+        yield return new WaitForSeconds(toggleDuration);
         isStopped = false;
-        isToggleOnCooldown = false;
-        Debug.Log("Cooldown terminé, joueur relancé automatiquement !");
+        Debug.Log("Joueur relancé automatiquement !");
     }
 
     void ActivateSlow()
@@ -115,8 +100,7 @@ public class Player : MonoBehaviour
         Debug.Log("Slow activé !");
         currentSpeed = slowSpeed;
         isSlowed = true;
-        StartCoroutine(DisableSlowAfterTime(slowDuration));
-        StartCoroutine(SlowCooldown());
+        StartCoroutine(DisableSlowAfterDuration());
     }
 
     void ActivateBoost()
@@ -131,35 +115,26 @@ public class Player : MonoBehaviour
 
     IEnumerator DisableSlowAfterTime(float duration)
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(slowDuration);
         currentSpeed = normalSpeed;
         isSlowed = false;
         Debug.Log("Slow terminé, retour à la vitesse normale.");
     }
 
-    IEnumerator SlowCooldown()
-    {
-        isSlowOnCooldown = true;
-        Debug.Log("Cooldown du slow en cours...");
-        yield return new WaitForSeconds(slowCooldownTime);
-        isSlowOnCooldown = false;
-        Debug.Log("Cooldown terminé, slow disponible !");
-    }
-
-    
+    // Dash
     private IEnumerator Dash()
     {
         canDash = false;
         isDashing = true;
-        float originalGravity = rb.gravityScale;  
-        rb.gravityScale = 0f;  
-        rb.velocity = new Vector2(mouvement.x * dashingPower, mouvement.y * dashingPower);  
-        tr.emitting = true;  
-        yield return new WaitForSeconds(dashingTime);  
-        tr.emitting = false;  
-        rb.gravityScale = originalGravity;  
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.velocity = new Vector2(mouvement.x * dashingPower, mouvement.y * dashingPower);
+        tr.emitting = true;
+        yield return new WaitForSeconds(dashingTime);
+        tr.emitting = false;
+        rb.gravityScale = originalGravity;
         isDashing = false;
-        yield return new WaitForSeconds(dashingCooldown);  
+        yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
 
@@ -202,4 +177,5 @@ public class Spell
 {
     public string name;
 }
+
 
