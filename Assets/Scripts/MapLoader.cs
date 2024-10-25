@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class MapLoader : MonoBehaviour
 {
@@ -32,10 +34,6 @@ public class MapLoader : MonoBehaviour
 
     private bool hasGeneratedMap = false;
 
-    public void Start()
-    {
-    }
-
     private void Update()
     {
         if (!hasGeneratedMap)
@@ -43,6 +41,11 @@ public class MapLoader : MonoBehaviour
             LoadMap(GameManager.Instance.mapToGenerate);
             GameManager.Instance.mapToGenerate = null;
             hasGeneratedMap = true;
+        } 
+        if (GameManager.Instance.hasRegeneratedMap)
+        {
+            NewMap(GameManager.Instance.mapToGenerate);
+            GameManager.Instance.hasRegeneratedMap = false;
         }
     }
 
@@ -162,5 +165,12 @@ public class MapLoader : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void NewMap(UnityMap map)
+    {
+        SceneManager.LoadScene(1);
+        Destroy(player);
+        GameManager.Instance.mapToGenerate = map;
     }
 }

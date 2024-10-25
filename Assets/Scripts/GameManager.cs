@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 public class GameManager : MonoBehaviour
 {
     public UnityMap mapToGenerate = null;
+    public float timer = 0;
+    public int loops = 0;
+    public bool hasRegeneratedMap = false;
 
     private static GameManager instance = null;
     public static GameManager Instance => instance;
