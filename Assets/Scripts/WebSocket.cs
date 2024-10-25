@@ -78,7 +78,6 @@ public class WebSocket : MonoBehaviour
             }
 
             String message = JsonUtility.ToJson(payload);
-            Debug.Log(message);
             socket.Emit("player:position", message);
         }
 
@@ -98,7 +97,6 @@ public class WebSocket : MonoBehaviour
 
         socket.On("gamestate", data =>
         {
-            Debug.Log(data);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
             GameState gamestate = JsonConvert.DeserializeObject<GameState>(jsonArray[0]);
 
