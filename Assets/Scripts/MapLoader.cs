@@ -27,6 +27,9 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject endPoint;
     [SerializeField] GameObject character;
     [SerializeField] GameObject[] house_array;
+    [SerializeField] GameObject Bombe;
+    [SerializeField] GameObject Coin;
+    [SerializeField] GameObject Wall;
 
     public GameObject player;
 
@@ -49,6 +52,11 @@ public class MapLoader : MonoBehaviour
             GameManager.Instance.hasRegeneratedMap = false;
         }
         ItemMap(GameManager.Instance.items);
+        if (GameManager.Instance.isDead)
+        {
+            PlayerToSpawn(GameManager.Instance.playerPosition);
+            GameManager.Instance.isDead = false;
+        }
     }
 
     public void LoadMap(UnityMap map)
@@ -116,32 +124,22 @@ public class MapLoader : MonoBehaviour
             }
             else if (tileData.type == "House")
             {
-                try
-                {
-                    System.Random random = new System.Random();
-                    int randomIndex = random.Next(5);
-                    Instantiate(house_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
-                    occupiedPositions.Add(position);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e);
-                }
+
+                System.Random random = new System.Random();
+                int randomIndex = random.Next(5);
+                Instantiate(house_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
+                occupiedPositions.Add(position);
+
 
             }
             else if (tileData.type == "Tree")
             {
-                try
-                {
-                    System.Random random = new System.Random();
-                    int randomIndex = random.Next(2);
-                    Instantiate(tree_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
-                    occupiedPositions.Add(position);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e);
-                }
+
+                System.Random random = new System.Random();
+                int randomIndex = random.Next(2);
+                Instantiate(tree_array[randomIndex], position, Quaternion.Euler(0, 0, 0));
+                occupiedPositions.Add(position);
+
             }
             else if (tileData.type == "Lake")
             {
@@ -188,15 +186,61 @@ public class MapLoader : MonoBehaviour
 
     public void ItemMap(Item[] items)
     {
+        ClearItems();
         foreach (Item item in items)
         {
             Vector3 position = item.coords;
-            position = new Vector3((position.x / 2) + (float)0.25, (position.y / 2) + (float)0.25, position.z);
+            position = new Vector3((position.y / 2) + (float)0.25, (position.x / 2) + (float)0.25, position.z);
             switch(item.type)
             {
-                case "Type de l'item":
+                case "COIN":
+                    Instantiate(Coin, position, Quaternion.Euler(0, 0, 0));
+
+                    break;
+
+                case "BOMB":
+                    Instantiate(Bombe, position, Quaternion.Euler(0, 0, 0));
+
+                    break;
+
+                case "WALL":
+                    Instantiate(Wall, position, Quaternion.Euler(0, 0, 0));
+
                     break;
             }
+        }
+    }
+
+    private void ClearItems()
+    {
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Coin"))
+        {
+            Destroy(item);
+        }
+
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Bomb"))
+        {
+            Destroy(item);
+        }
+
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Wall"))
+        {
+            Destroy(item);
+        }
+    }
+
+    public void PlayerToSpawn(Vector3 position)
+    {
+        position = new Vector3((position.x / 2) + (float)0.25, (position.y / 2) + (float)0.25, position.z);
+        Debug.Log(position);
+        if (player != null)
+        {
+            
+            player.transform.position = position;
+        }
+        else
+        {
+            Debug.Log("Le joueur n'existe pas !");
         }
     }
 }
