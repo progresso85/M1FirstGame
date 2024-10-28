@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -40,6 +41,10 @@ public class Player : MonoBehaviour
     public Animator animator;
     Vector2 mouvement;
 
+    public Image imageComponent;
+    public Sprite[] renderSprite;
+    
+
     void Start()
     {
         currentSpeed = normalSpeed;
@@ -69,6 +74,10 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
+        if (GameManager.Instance.speedCoin == "coin")
+        {
+            ActivateBoost();
+        }
     }
 
     void FixedUpdate()
@@ -84,6 +93,7 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
+        //GameObject.Find("Boost").GetComponent<Image>.SetActive(false);
         Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
 
@@ -91,23 +101,26 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(toggleDuration);
         isStopped = false;
+        //GameObject.Find("Stun").GetComponent<Image>.SetActive(false);
         Debug.Log("Joueur relancé automatiquement !");
     }
 
     void ActivateSlow()
     {
         Debug.Log("Slow activé !");
+
         currentSpeed = slowSpeed;
         isSlowed = true;
+        //GameObject.Find("Slow").GetComponent<Image>.SetActive(true);
         StartCoroutine(DisableSlowAfterDuration(slowDuration));
     }
 
-    void ActivateBoost()
+    public void ActivateBoost()
     {
 
         Debug.Log("Boost activé !");
         currentSpeed = boostSpeed;
-
+        //GameObject.Find("Boost").GetComponent<Image>.SetActive(true);
         StartCoroutine(DisableBoostAfterTime(boostDuration));
     }
 
@@ -115,6 +128,7 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Drunk activé !");
         isDrunk = true;
+        //GameObject.Find("Drunk").GetComponent<Image>.SetActive(true);
         StartCoroutine(DisableDrunkAfterTime(drunkDuration));
 
     }
@@ -124,6 +138,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
         isSlowed = false;
+        //GameObject.Find("Slow").GetComponent<Image>.SetActive(false);
         Debug.Log("Slow terminé, retour à la vitesse normale.");
     }
 
@@ -131,6 +146,7 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         isDrunk = false;
+        //GameObject.Find("Drunk").GetComponent<Image>.SetActive(false);
         Debug.Log("Vous n'êtes plus bourré !");
     }
     
@@ -176,6 +192,7 @@ public class Player : MonoBehaviour
                 yield return new WaitForSeconds(toggleCastingTime);
                 isStopped = true;
                 Debug.Log("Joueur stoppé !");
+                //GameObject.Find("Stun").GetComponent<Image>.SetActive(true);
                 StartCoroutine(DisableToggleAfterCooldown());
                 break;
             case "Drunk Mode":

@@ -103,22 +103,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1938375286474582692}
   tr: {fileID: 1898293314952815151}
-  id: 
   normalSpeed: 2
   boostSpeed: 5
   slowSpeed: 1
-  boostCastingTime: 2
   boostDuration: 3
-  boostCooldownTime: 5
-  toggleCastingTime: 1
-  toggleCooldownTime: 3
-  slowCastingTime: 1
+  toggleDuration: 5
   slowDuration: 4
-  slowCooldownTime: 5
+  slowCastingTime: 1
+  boostCastingTime: 2
+  toggleCastingTime: 1
+  drunkCastingTime: 1
+  drunkDuration: 5
   dashingPower: 6
   dashingTime: 0.2
   dashingCooldown: 3
   animator: {fileID: 7504734425723656216}
+  imageComponent: {fileID: 1170677550050742290, guid: 054a69019af61d84f93bb33bff623552, type: 3}
+  renderSprite:
+  - {fileID: 21300000, guid: b6baadfb7ee64334c8a76f0b57a84dff, type: 3}
+  - {fileID: 21300000, guid: a79f9df84f1a11847a670479ebfb8bca, type: 3}
+  - {fileID: 21300000, guid: 823d0699e79cb4e4589a0d7057def074, type: 3}
+  - {fileID: 21300000, guid: e180dc2e5f26f4c48b49854449a2539c, type: 3}
 --- !u!50 &1938375286474582692
 Rigidbody2D:
   serializedVersion: 4

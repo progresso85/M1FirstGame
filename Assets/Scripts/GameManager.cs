@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public Spell spell;
     public Vector3 playerPosition;
     public bool isDead = false;
+    public string speedCoin;
 
     private static GameManager instance = null;
     public static GameManager Instance => instance;
