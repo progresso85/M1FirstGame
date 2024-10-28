@@ -32,7 +32,7 @@ public class WebSocket : MonoBehaviour
             ReconnectionAttempts = 5,
             ReconnectionDelay = 5000,
         };
-        socket = new SocketIOUnity("https://project-maker-staging-c392e96b4ded.herokuapp.com/", options);
+        socket = new SocketIOUnity("http://localhost:3001", options);
 
         socket.OnConnected += (sender, e) => 
         {
