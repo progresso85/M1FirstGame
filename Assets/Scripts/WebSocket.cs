@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SocketIOClient;
-using UnityEditor.VersionControl;
 using System;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
@@ -78,20 +77,17 @@ public class WebSocket : MonoBehaviour
             }
 
             String message = JsonUtility.ToJson(payload);
-            Debug.Log(message);
             socket.Emit("player:position", message);
         }
 
         socket.On("signupsuccess", data =>
         {
-            Debug.Log(data);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
             playerData = JsonConvert.DeserializeObject<PlayerData>(jsonArray[0]);
         });
 
         socket.On("go", data =>
         {
-            Debug.Log(data);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
             GameManager.Instance.mapToGenerate = JsonConvert.DeserializeObject<UnityMap>(jsonArray[0]);
         });
@@ -118,10 +114,17 @@ public class WebSocket : MonoBehaviour
             GameManager.Instance.hasRegeneratedMap = true;
         });
 
-        socket.On("death", data =>
+        socket.On("unity:position", data =>
         {
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(data.ToString());
-            Player player = JsonConvert.DeserializeObject<Player>(jsonArray[0]);
+            GameManager.Instance.playerPosition = JsonConvert.DeserializeObject<Vector3>(jsonArray[0]);
+            GameManager.Instance.isDead = true;
+        });
+
+        socket.On("cast:spell", spell =>
+        {
+            string[] jsonArray = JsonConvert.DeserializeObject<string[]>(spell.ToString());
+            GameManager.Instance.spell = JsonConvert.DeserializeObject<Spell>(jsonArray[0]);
         });
     }
 
@@ -161,6 +164,7 @@ public class WebSocket : MonoBehaviour
                     {
                         SceneManager.LoadScene("Map generated");
                     }
+                    GameManager.Instance.items = gamestate.items;
                     GameManager.Instance.timer = gamestate.timer;
                     GameManager.Instance.loops = gamestate.loops;
                     break;

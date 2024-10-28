@@ -6,34 +6,29 @@ public class Player : MonoBehaviour
 {
     public Rigidbody2D rb;
     public TrailRenderer tr;
-    public AudioManager audioManager;
 
-    public string id;
     public float normalSpeed = 2f;
     public float boostSpeed = 10f;
     public float slowSpeed = 2f;
     private float currentSpeed;
 
-    // boost (X)
-    public float boostCastingTime = 2f;
-    public float boostDuration = 3f;
-    public float boostCooldownTime = 5f;
-    private bool isBoostOnCooldown = false;
-    private bool isCastingBoost = false;
-
-    // toggle (V)
-    public float toggleCastingTime = 1f;
-    public float toggleCooldownTime = 3f;
-    private bool isToggleOnCooldown = false;
-    private bool isStopped = false;
-
-    // slow (C)
+    
+    public float boostDuration = 5f;
+    public float toggleDuration = 5f;
+    public float slowDuration = 5f;
     public float slowCastingTime = 1f;
-    public float slowDuration = 4f;
-    public float slowCooldownTime = 5f;
-    private bool isSlowOnCooldown = false;
-    private bool isCastingSlow = false;
+    public float boostCastingTime = 1f;
+    public float toggleCastingTime = 1f;
+
+    private bool isStopped = false;
     private bool isSlowed = false;
+    private bool isCastingBoost = false;
+    private bool isCastingSlow = false;
+
+    // drunk
+    public float drunkCastingTime = 1f;
+    public float drunkDuration = 5f;
+    private bool isDrunk = false;
 
     // dash
     private bool canDash = true;
@@ -48,63 +43,28 @@ public class Player : MonoBehaviour
     void Start()
     {
         currentSpeed = normalSpeed;
-
-        // Assigner l'AudioManager trouvé dans la scène
-        audioManager = FindObjectOfType<AudioManager>();
     }
 
     void Update()
     {
-        // Gérer le mouvement
+        
         if (!isStopped && !isDashing)
         {
-            mouvement.x = Input.GetAxisRaw("Horizontal");
-            mouvement.y = Input.GetAxisRaw("Vertical");
+            mouvement.x = isDrunk ? -Input.GetAxisRaw("Horizontal") : Input.GetAxisRaw("Horizontal");
+            mouvement.y = isDrunk ? -Input.GetAxisRaw("Vertical") : Input.GetAxisRaw("Vertical");
         }
         else
         {
             mouvement = Vector2.zero;
         }
 
-        // Détecter le mouvement et jouer le son de marche
-        if (mouvement.magnitude > 0 && !isStopped)
-        {
-            // Le joueur se déplace, jouer le son de marche
-            if (audioManager != null)
-            {
-                audioManager.PlayWalkSound();
-            }
-        }
-        else
-        {
-            // Le joueur s'arrête, arrêter le son de marche
-            if (audioManager != null)
-            {
-                audioManager.StopWalkSound();
-            }
-        }
-
-        // Animation du joueur
+        
         animator.SetFloat("Horizontal", mouvement.x);
         animator.SetFloat("Vertical", mouvement.y);
         animator.SetFloat("Speed", mouvement.magnitude);
 
-        // Gestion des autres actions (boost, slow, dash)
-        if (Input.GetKeyDown(KeyCode.X) && !isBoostOnCooldown && !isCastingBoost)
-        {
-            StartCoroutine(CastBoost());
-        }
-
-        if (Input.GetKeyDown(KeyCode.V) && !isToggleOnCooldown && !isStopped)
-        {
-            StartCoroutine(CastToggle());
-        }
-
-        if (Input.GetKeyDown(KeyCode.C) && !isSlowOnCooldown && !isCastingSlow && !isSlowed)
-        {
-            StartCoroutine(CastSlow());
-        }
-
+        StartCoroutine(SpellCast(GameManager.Instance.spell));
+        
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             StartCoroutine(Dash());
@@ -113,90 +73,67 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Mouvement du joueur
+       
         if (!isStopped && !isDashing)
         {
             rb.MovePosition(rb.position + mouvement * currentSpeed * Time.fixedDeltaTime);
         }
     }
 
-    // Boost
-    IEnumerator CastBoost()
-    {
-        isCastingBoost = true;
-        yield return new WaitForSeconds(boostCastingTime);
-        ActivateBoost();
-        isCastingBoost = false;
-    }
-
-    void ActivateBoost()
-    {
-        currentSpeed = boostSpeed;
-        StartCoroutine(DisableBoostAfterTime(boostDuration));
-        StartCoroutine(BoostCooldown());
-    }
-
     IEnumerator DisableBoostAfterTime(float duration)
     {
         yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
-    }
-
-    IEnumerator BoostCooldown()
-    {
-        isBoostOnCooldown = true;
-        yield return new WaitForSeconds(boostCooldownTime);
-        isBoostOnCooldown = false;
-    }
-
-    // Toggle
-    IEnumerator CastToggle()
-    {
-        yield return new WaitForSeconds(toggleCastingTime);
-        isStopped = true;
-        StartCoroutine(DisableToggleAfterCooldown());
+        Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
 
     IEnumerator DisableToggleAfterCooldown()
     {
-        isToggleOnCooldown = true;
-        yield return new WaitForSeconds(toggleCooldownTime);
+        yield return new WaitForSeconds(toggleDuration);
         isStopped = false;
-        isToggleOnCooldown = false;
-    }
-
-    // Slow
-    IEnumerator CastSlow()
-    {
-        isCastingSlow = true;
-        yield return new WaitForSeconds(slowCastingTime);
-        ActivateSlow();
-        isCastingSlow = false;
+        Debug.Log("Joueur relancé automatiquement !");
     }
 
     void ActivateSlow()
     {
+        Debug.Log("Slow activé !");
         currentSpeed = slowSpeed;
         isSlowed = true;
-        StartCoroutine(DisableSlowAfterTime(slowDuration));
-        StartCoroutine(SlowCooldown());
+        StartCoroutine(DisableSlowAfterDuration(slowDuration));
     }
 
-    IEnumerator DisableSlowAfterTime(float duration)
+    void ActivateBoost()
+    {
+
+        Debug.Log("Boost activé !");
+        currentSpeed = boostSpeed;
+
+        StartCoroutine(DisableBoostAfterTime(boostDuration));
+    }
+
+    void ActivateDrunk()
+    {
+        Debug.Log("Drunk activé !");
+        isDrunk = true;
+        StartCoroutine(DisableDrunkAfterTime(drunkDuration));
+
+    }
+
+    IEnumerator DisableSlowAfterDuration(float duration)
     {
         yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
         isSlowed = false;
+        Debug.Log("Slow terminé, retour à la vitesse normale.");
     }
 
-    IEnumerator SlowCooldown()
+    IEnumerator DisableDrunkAfterTime(float duration)
     {
-        isSlowOnCooldown = true;
-        yield return new WaitForSeconds(slowCooldownTime);
-        isSlowOnCooldown = false;
+        yield return new WaitForSeconds(duration);
+        isDrunk = false;
+        Debug.Log("Vous n'êtes plus bourré !");
     }
-
-    // Dash
+    
     private IEnumerator Dash()
     {
         canDash = false;
@@ -212,4 +149,49 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
+
+    public IEnumerator SpellCast(Spell spell)
+    {
+        switch (spell.name)
+        {
+            case "Slow Mode":
+                isCastingSlow = true;
+                spell.name = "";
+                Debug.Log("Slow en cours de casting...");
+                yield return new WaitForSeconds(slowCastingTime);
+                ActivateSlow();
+                isCastingSlow = false;
+                break;
+            case "Quickness":
+                isCastingBoost = true;
+                spell.name = "";
+                Debug.Log("Boost en cours de casting...");
+                yield return new WaitForSeconds(boostCastingTime);
+                ActivateBoost();
+                isCastingBoost = false;
+                break;
+            case "Sudden Stop":
+                Debug.Log("Toggle en cours de casting...");
+                spell.name = "";
+                yield return new WaitForSeconds(toggleCastingTime);
+                isStopped = true;
+                Debug.Log("Joueur stoppé !");
+                StartCoroutine(DisableToggleAfterCooldown());
+                break;
+            case "Drunk Mode":
+                Debug.Log("Drunk en cours de casting...");
+                spell.name = "";
+                yield return new WaitForSeconds(drunkCastingTime);
+                ActivateDrunk();
+                break;
+        }
+    }
 }
+
+[System.Serializable]
+public class Spell
+{
+    public string name;
+}
+
+
