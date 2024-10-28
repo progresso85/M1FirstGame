@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Tile
   - House
+  - Wall
+  - Bomb
+  - Coin
+  - Spell
   layers:
   - Default
   - TransparentFX
@@ -54,4 +58,7 @@ TagManager:
     locked: 0
   - name: Character
     uniqueID: 237076293
+    locked: 0
+  - name: Tree
+    uniqueID: 2548991605
     locked: 0

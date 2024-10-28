@@ -19,7 +19,17 @@ public class Timer : MonoBehaviour
         double doubleTime = Math.Round(time, 0);
         int minutes = Convert.ToInt32(doubleTime) / 60;
         int seconds = Convert.ToInt32(doubleTime) % 60;
-        string timer = minutes + " : " + seconds;
+        string timer;
+        if (seconds < 10)
+        {
+            timer = minutes + " : 0" + seconds;
+        }
+        else
+        {
+            timer = minutes + " : " + seconds;
+        }
+
+  
         timerObject.text = timer;
 
     }
