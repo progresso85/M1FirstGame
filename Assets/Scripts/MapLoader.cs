@@ -67,17 +67,9 @@ public class MapLoader : MonoBehaviour
         if (GameManager.Instance.isDead)
         {
             PlayerToSpawn(GameManager.Instance.playerPosition);
+            audioManager.PlayDeathSound();
+            audioManager.PlayExplosionSound();
             GameManager.Instance.isDead = false;
-        }
-
-        
-        if (!victorySoundPlayed && player != null && endPoint != null)
-        {
-            if (Vector3.Distance(player.transform.position, endPoint.transform.position) < 0.5f)
-            {
-                audioManager.PlayVictorySound();
-                victorySoundPlayed = true; 
-            }
         }
     }
 
@@ -173,7 +165,6 @@ public class MapLoader : MonoBehaviour
                 Instantiate(spawnPoint, position, Quaternion.Euler(0, 0, 0));
                 player = Instantiate(character, position, Quaternion.Euler(0, 0, 0));
                 DontDestroyOnLoad(player);
-                DontDestroyOnLoad(AudioManager);
 
                 occupiedPositions.Add(position);
             }
@@ -202,6 +193,7 @@ public class MapLoader : MonoBehaviour
 
     public void NewMap(UnityMap map)
     {
+        audioManager.PlayVictorySound();
         SceneManager.LoadScene(1);
         Destroy(player);
         GameManager.Instance.mapToGenerate = map;

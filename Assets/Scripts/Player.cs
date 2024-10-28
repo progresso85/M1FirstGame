@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
 
     public Image imageComponent;
     public Sprite[] renderSprite;
-    
+
 
     void Start()
     {
@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
 
         // Recherche et assignation de l'AudioManager
         audioManager = FindObjectOfType<AudioManager>();
+        DontDestroyOnLoad(audioManager);
     }
 
     void Update()
@@ -62,14 +63,10 @@ public class Player : MonoBehaviour
             mouvement.x = isDrunk ? -Input.GetAxisRaw("Horizontal") : Input.GetAxisRaw("Horizontal");
             mouvement.y = isDrunk ? -Input.GetAxisRaw("Vertical") : Input.GetAxisRaw("Vertical");
 
-            // Détection du mouvement pour jouer/arrêter le son de marche
-            if (mouvement.magnitude > 0 && !audioManager.IsWalkSoundPlaying())
+            //Détection du mouvement pour jouer / arrêter le son de marche
+                if (mouvement.magnitude > 0 && !audioManager.IsWalkSoundPlaying())
             {
                 audioManager.PlayWalkSound();
-            }
-            else if (mouvement.magnitude == 0 && audioManager.IsWalkSoundPlaying())
-            {
-                audioManager.StopWalkSound();
             }
         }
         else
