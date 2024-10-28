@@ -30,13 +30,25 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject Bombe;
     [SerializeField] GameObject Coin;
     [SerializeField] GameObject Wall;
+    [SerializeField] GameObject AudioManager;
 
     public GameObject player;
+    public AudioManager audioManager;
 
     HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
    
 
     private bool hasGeneratedMap = false;
+    private bool victorySoundPlayed = false;
+
+    private void Start()
+    {
+        audioManager = FindObjectOfType<AudioManager>();
+        if (!audioManager)
+        {
+            audioManager = Instantiate(AudioManager).GetComponent<AudioManager>();
+        }
+    }
 
     private void Update()
     {
@@ -56,6 +68,16 @@ public class MapLoader : MonoBehaviour
         {
             PlayerToSpawn(GameManager.Instance.playerPosition);
             GameManager.Instance.isDead = false;
+        }
+
+        
+        if (!victorySoundPlayed && player != null && endPoint != null)
+        {
+            if (Vector3.Distance(player.transform.position, endPoint.transform.position) < 0.5f)
+            {
+                audioManager.PlayVictorySound();
+                victorySoundPlayed = true; 
+            }
         }
     }
 
@@ -151,6 +173,7 @@ public class MapLoader : MonoBehaviour
                 Instantiate(spawnPoint, position, Quaternion.Euler(0, 0, 0));
                 player = Instantiate(character, position, Quaternion.Euler(0, 0, 0));
                 DontDestroyOnLoad(player);
+                DontDestroyOnLoad(AudioManager);
 
                 occupiedPositions.Add(position);
             }

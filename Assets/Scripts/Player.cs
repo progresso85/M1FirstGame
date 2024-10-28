@@ -1,7 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
     public float slowSpeed = 2f;
     private float currentSpeed;
 
-    
     public float boostDuration = 5f;
     public float toggleDuration = 5f;
     public float slowDuration = 5f;
@@ -26,12 +25,12 @@ public class Player : MonoBehaviour
     private bool isCastingBoost = false;
     private bool isCastingSlow = false;
 
-    // drunk
+    // Mode ivresse
     public float drunkCastingTime = 1f;
     public float drunkDuration = 5f;
     private bool isDrunk = false;
 
-    // dash
+    // Dash
     private bool canDash = true;
     private bool isDashing = false;
     public float dashingPower = 20f;
@@ -39,7 +38,10 @@ public class Player : MonoBehaviour
     public float dashingCooldown = 3f;
 
     public Animator animator;
-    Vector2 mouvement;
+    private Vector2 mouvement;
+
+    // Référence à l'AudioManager
+    private AudioManager audioManager;
 
     public Image imageComponent;
     public Sprite[] renderSprite;
@@ -48,28 +50,40 @@ public class Player : MonoBehaviour
     void Start()
     {
         currentSpeed = normalSpeed;
+
+        // Recherche et assignation de l'AudioManager
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     void Update()
     {
-        
         if (!isStopped && !isDashing)
         {
             mouvement.x = isDrunk ? -Input.GetAxisRaw("Horizontal") : Input.GetAxisRaw("Horizontal");
             mouvement.y = isDrunk ? -Input.GetAxisRaw("Vertical") : Input.GetAxisRaw("Vertical");
+
+            // Détection du mouvement pour jouer/arrêter le son de marche
+            if (mouvement.magnitude > 0 && !audioManager.IsWalkSoundPlaying())
+            {
+                audioManager.PlayWalkSound();
+            }
+            else if (mouvement.magnitude == 0 && audioManager.IsWalkSoundPlaying())
+            {
+                audioManager.StopWalkSound();
+            }
         }
         else
         {
             mouvement = Vector2.zero;
+            audioManager.StopWalkSound(); // Arrêter le son si le joueur est stoppé
         }
 
-        
         animator.SetFloat("Horizontal", mouvement.x);
         animator.SetFloat("Vertical", mouvement.y);
         animator.SetFloat("Speed", mouvement.magnitude);
 
         StartCoroutine(SpellCast(GameManager.Instance.spell));
-        
+
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             StartCoroutine(Dash());
@@ -83,7 +97,6 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-       
         if (!isStopped && !isDashing)
         {
             rb.MovePosition(rb.position + mouvement * currentSpeed * Time.fixedDeltaTime);
@@ -118,7 +131,6 @@ public class Player : MonoBehaviour
 
     public void ActivateBoost()
     {
-
         Debug.Log("Boost activé !");
         currentSpeed = boostSpeed;
         //GameObject.Find("Boost").GetComponent<Image>.SetActive(true);
@@ -131,7 +143,6 @@ public class Player : MonoBehaviour
         isDrunk = true;
         //GameObject.Find("Drunk").GetComponent<Image>.SetActive(true);
         StartCoroutine(DisableDrunkAfterTime(drunkDuration));
-
     }
 
     IEnumerator DisableSlowAfterDuration(float duration)
@@ -148,9 +159,9 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(duration);
         isDrunk = false;
         //GameObject.Find("Drunk").GetComponent<Image>.SetActive(false);
-        Debug.Log("Vous n'êtes plus bourré !");
+        Debug.Log("Vous n'êtes plus ivre !");
     }
-    
+
     private IEnumerator Dash()
     {
         canDash = false;
@@ -179,6 +190,7 @@ public class Player : MonoBehaviour
                 ActivateSlow();
                 isCastingSlow = false;
                 break;
+
             case "Quickness":
                 isCastingBoost = true;
                 spell.name = "";
@@ -187,6 +199,7 @@ public class Player : MonoBehaviour
                 ActivateBoost();
                 isCastingBoost = false;
                 break;
+
             case "Sudden Stop":
                 Debug.Log("Toggle en cours de casting...");
                 spell.name = "";
@@ -196,6 +209,7 @@ public class Player : MonoBehaviour
                 //GameObject.Find("Stun").GetComponent<Image>.SetActive(true);
                 StartCoroutine(DisableToggleAfterCooldown());
                 break;
+
             case "Drunk Mode":
                 Debug.Log("Drunk en cours de casting...");
                 spell.name = "";
@@ -211,5 +225,4 @@ public class Spell
 {
     public string name;
 }
-
 
