@@ -16,6 +16,7 @@ MonoImporter:
   - timerStressSound: {fileID: 8300000, guid: 26b95a3892fd0496e9898079a5fe29b6, type: 3}
   - victorySound: {fileID: 8300000, guid: 370c604be86274532adffdf649f9eeb3, type: 3}
   - walkSound: {fileID: 8300000, guid: 2e115fa75e1474024b12c2442d849dbf, type: 3}
+  - coinSound: {fileID: 8300000, guid: 1d04bf8df6fde4d3c8d20b4b7cbfd092, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

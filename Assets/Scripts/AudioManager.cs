@@ -15,6 +15,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip timerStressSound;
     public AudioClip victorySound;
     public AudioClip walkSound;
+    public AudioClip coinSound;
+
 
     // Variables de volume
     [Range(0f, 1f)] public float cityAmbiantVolume = 0.5f;
@@ -29,6 +31,7 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 1f)] public float timerStressVolume = 0.5f;
     [Range(0f, 1f)] public float victoryVolume = 0.5f;
     [Range(0f, 1f)] public float walkVolume = 0.5f;
+    [Range(0f, 1f)] public float coinVolume = 0.5f;
 
     private AudioSource audioSource;
     private AudioSource walkAudioSource;
@@ -60,6 +63,7 @@ public class AudioManager : MonoBehaviour
     public void PlayMenuSound() => PlayLoop(menuSound, menuVolume);
     public void PlayTimerStressSound() => PlayLoop(timerStressSound, timerStressVolume);
     public void PlayVictorySound() => audioSource.PlayOneShot(victorySound, victoryVolume);
+    public void PlayCoinSound() => audioSource.PlayOneShot(coinSound, coinVolume);
 
     // Jouer et arrêter le son de marche
     public void PlayWalkSound()
@@ -97,6 +101,7 @@ public class AudioManager : MonoBehaviour
     public void SetMenuVolume(float volume) => menuVolume = volume;
     public void SetTimerStressVolume(float volume) => timerStressVolume = volume;
     public void SetVictoryVolume(float volume) => victoryVolume = volume;
+    public void SetCoinVolume(float volume) => coinVolume = volume;
 
     private void SetVolume(AudioClip clip, ref float volumeVar, float volume)
     {
