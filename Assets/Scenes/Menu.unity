@@ -29917,7 +29917,7 @@ MonoBehaviour:
   rb: {fileID: 983447590}
   tr: {fileID: 983447594}
   normalSpeed: 2
-  boostSpeed: 4
+  boostSpeed: 3
   slowSpeed: 1
   boostDuration: 5
   toggleDuration: 5
