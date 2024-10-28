@@ -32,7 +32,8 @@ public class WebSocket : MonoBehaviour
             ReconnectionAttempts = 5,
             ReconnectionDelay = 5000,
         };
-        socket = new SocketIOUnity("http://localhost:3001", options);
+        socket = new SocketIOUnity("https://project-maker-staging-c392e96b4ded.herokuapp.com/", options);
+        //socket = new SocketIOUnity("http://localhost:3001", options);
 
         socket.OnConnected += (sender, e) => 
         {
@@ -126,6 +127,12 @@ public class WebSocket : MonoBehaviour
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(spell.ToString());
             GameManager.Instance.spell = JsonConvert.DeserializeObject<Spell>(jsonArray[0]);
         });
+
+        socket.On("item:trigger", item =>
+        {
+            string[] jsonArray = JsonConvert.DeserializeObject<string[]>(item.ToString());
+            GameManager.Instance.speedCoin = JsonConvert.DeserializeObject<string>(jsonArray[0]);
+        });
     }
 
     void OnDestroy()
@@ -175,6 +182,11 @@ public class WebSocket : MonoBehaviour
                         SceneManager.LoadScene("Menu");
                     }
                     // Add victory/lose screen
+                    break;
+                case "EVENT":
+                    GameManager.Instance.items = gamestate.items;
+                    GameManager.Instance.timer = gamestate.timer;
+                    GameManager.Instance.loops = gamestate.loops;
                     break;
             }
         });
