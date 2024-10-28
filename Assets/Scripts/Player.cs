@@ -74,9 +74,10 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
-        if (GameManager.Instance.speedCoin == "coin")
+        if (GameManager.Instance.speedCoin == "COIN")
         {
             ActivateBoost();
+            GameManager.Instance.speedCoin = "";
         }
     }
 

@@ -130,10 +130,8 @@ public class WebSocket : MonoBehaviour
 
         socket.On("item:trigger", item =>
         {
-            Debug.Log(item);
             string[] jsonArray = JsonConvert.DeserializeObject<string[]>(item.ToString());
             GameManager.Instance.speedCoin = JsonConvert.DeserializeObject<string>(jsonArray[0]);
-            Debug.Log(GameManager.Instance.speedCoin);
         });
     }
 
