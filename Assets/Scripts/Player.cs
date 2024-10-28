@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
 
     IEnumerator DisableBoostAfterTime(float duration)
     {
-        yield return new WaitForSeconds(boostDuration);
+        yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
         Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
@@ -121,7 +121,7 @@ public class Player : MonoBehaviour
 
     IEnumerator DisableSlowAfterTime(float duration)
     {
-        yield return new WaitForSeconds(slowDuration);
+        yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
         isSlowed = false;
         Debug.Log("Slow terminé, retour à la vitesse normale.");
@@ -166,7 +166,6 @@ public class Player : MonoBehaviour
                 isCastingBoost = true;
                 spell.name = "";
                 Debug.Log("Boost en cours de casting...");
-
                 yield return new WaitForSeconds(boostCastingTime);
                 ActivateBoost();
                 isCastingBoost = false;
