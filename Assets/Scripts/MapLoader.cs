@@ -30,6 +30,7 @@ public class MapLoader : MonoBehaviour
     [SerializeField] GameObject Bombe;
     [SerializeField] GameObject Coin;
     [SerializeField] GameObject Wall;
+    [SerializeField] GameObject AudioManager;
 
     public GameObject player;
 
@@ -151,6 +152,7 @@ public class MapLoader : MonoBehaviour
                 Instantiate(spawnPoint, position, Quaternion.Euler(0, 0, 0));
                 player = Instantiate(character, position, Quaternion.Euler(0, 0, 0));
                 DontDestroyOnLoad(player);
+                DontDestroyOnLoad(AudioManager);
 
                 occupiedPositions.Add(position);
             }
