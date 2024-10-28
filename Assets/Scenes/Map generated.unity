@@ -178,6 +178,9 @@ MonoBehaviour:
   - {fileID: 1758673036144417299, guid: ea6acf9672dc88e40a54bfc3234d1e4b, type: 3}
   - {fileID: 4996996557214073924, guid: 85be1da38b0a9264c9e517dcf0e30a04, type: 3}
   - {fileID: 7220702352324869237, guid: 3d8ba38d4e4c82249976dbc8c047863e, type: 3}
+  Bombe: {fileID: 2163698283906036073, guid: c7cfd238a7e5b437eb464f9f0b4cbda1, type: 3}
+  Coin: {fileID: 2588101586648291374, guid: 380a8dddc8df04d53aa5bbc7e267feca, type: 3}
+  Wall: {fileID: 4269652707877748586, guid: 710dc91bb2cde43039c3e901d33efafe, type: 3}
   player: {fileID: 5708432833005650873, guid: 1786189bf4c9bc149be77309a09ee622, type: 3}
 --- !u!4 &265541237
 Transform:
