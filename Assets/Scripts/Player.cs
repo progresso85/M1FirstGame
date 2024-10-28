@@ -107,7 +107,15 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
-        //GameObject.Find("Boost").GetComponent<Image>.SetActive(false);
+       GameObject boostObject = GameObject.Find("Boost");
+                if (boostObject != null)
+                {
+                    boostObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Boost n'a pas été trouvé.");
+                }
         Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
 
@@ -115,7 +123,15 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(toggleDuration);
         isStopped = false;
-        //GameObject.Find("Stun").GetComponent<Image>.SetActive(false);
+        GameObject stunObject = GameObject.Find("Stun");
+                if (stunObject != null)
+                {
+                    stunObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Stun n'a pas été trouvé.");
+                }
         Debug.Log("Joueur relancé automatiquement !");
     }
 
@@ -125,7 +141,15 @@ public class Player : MonoBehaviour
 
         currentSpeed = slowSpeed;
         isSlowed = true;
-        //GameObject.Find("Slow").GetComponent<Image>.SetActive(true);
+        GameObject slowObject = GameObject.Find("Slow");
+                if (slowObject != null)
+                {
+                    slowObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Slow n'a pas été trouvé.");
+                }
         StartCoroutine(DisableSlowAfterDuration(slowDuration));
     }
 
@@ -133,7 +157,15 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Boost activé !");
         currentSpeed = boostSpeed;
-        //GameObject.Find("Boost").GetComponent<Image>.SetActive(true);
+        GameObject boostObject = GameObject.Find("Boost");
+                if (boostObject != null)
+                {
+                    boostObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Boost n'a pas été trouvé.");
+                }
         StartCoroutine(DisableBoostAfterTime(boostDuration));
     }
 
@@ -141,7 +173,15 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Drunk activé !");
         isDrunk = true;
-        //GameObject.Find("Drunk").GetComponent<Image>.SetActive(true);
+        GameObject drunkObject = GameObject.Find("Drunk");
+                if (drunkObject != null)
+                {
+                    drunkObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Drunk n'a pas été trouvé.");
+                }
         StartCoroutine(DisableDrunkAfterTime(drunkDuration));
     }
 
@@ -150,7 +190,15 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
         isSlowed = false;
-        //GameObject.Find("Slow").GetComponent<Image>.SetActive(false);
+        GameObject slowObject = GameObject.Find("Slow");
+                if (slowObject != null)
+                {
+                    slowObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Slow n'a pas été trouvé.");
+                }
         Debug.Log("Slow terminé, retour à la vitesse normale.");
     }
 
@@ -158,7 +206,15 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         isDrunk = false;
-        //GameObject.Find("Drunk").GetComponent<Image>.SetActive(false);
+        GameObject drunkObject = GameObject.Find("Drunk");
+                if (drunkObject != null)
+                {
+                    drunkObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Drunk n'a pas été trouvé.");
+                }
         Debug.Log("Vous n'êtes plus ivre !");
     }
 
@@ -206,7 +262,15 @@ public class Player : MonoBehaviour
                 yield return new WaitForSeconds(toggleCastingTime);
                 isStopped = true;
                 Debug.Log("Joueur stoppé !");
-                //GameObject.Find("Stun").GetComponent<Image>.SetActive(true);
+                GameObject stunObject = GameObject.Find("Stun");
+                if (stunObject != null)
+                {
+                    stunObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Stun n'a pas été trouvé.");
+                }
                 StartCoroutine(DisableToggleAfterCooldown());
                 break;
 
