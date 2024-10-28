@@ -16,14 +16,19 @@ public class Player : MonoBehaviour
     public float boostDuration = 5f;
     public float toggleDuration = 5f;
     public float slowDuration = 5f;
-    private float slowCastingTime = 3f;
-    private float boostCastingTime = 3f;
-    private float toggleCastingTime = 1f;
+    public float slowCastingTime = 1f;
+    public float boostCastingTime = 1f;
+    public float toggleCastingTime = 1f;
 
     private bool isStopped = false;
     private bool isSlowed = false;
     private bool isCastingBoost = false;
     private bool isCastingSlow = false;
+
+    // drunk
+    public float drunkCastingTime = 1f;
+    public float drunkDuration = 5f;
+    private bool isDrunk = false;
 
     // dash
     private bool canDash = true;
@@ -45,8 +50,8 @@ public class Player : MonoBehaviour
         
         if (!isStopped && !isDashing)
         {
-            mouvement.x = Input.GetAxisRaw("Horizontal");
-            mouvement.y = Input.GetAxisRaw("Vertical");
+            mouvement.x = isDrunk ? -Input.GetAxisRaw("Horizontal") : Input.GetAxisRaw("Horizontal");
+            mouvement.y = isDrunk ? -Input.GetAxisRaw("Vertical") : Input.GetAxisRaw("Vertical");
         }
         else
         {
@@ -77,7 +82,7 @@ public class Player : MonoBehaviour
 
     IEnumerator DisableBoostAfterTime(float duration)
     {
-        yield return new WaitForSeconds(boostDuration);
+        yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
         Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
@@ -106,15 +111,29 @@ public class Player : MonoBehaviour
         StartCoroutine(DisableBoostAfterTime(boostDuration));
     }
 
+    void ActivateDrunk()
+    {
+        Debug.Log("Drunk activé !");
+        isDrunk = true;
+        StartCoroutine(DisableDrunkAfterTime(drunkDuration));
+
+    }
+
     IEnumerator DisableSlowAfterDuration(float duration)
     {
-        yield return new WaitForSeconds(slowDuration);
+        yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
         isSlowed = false;
         Debug.Log("Slow terminé, retour à la vitesse normale.");
     }
 
-    // Dash
+    IEnumerator DisableDrunkAfterTime(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        isDrunk = false;
+        Debug.Log("Vous n'êtes plus bourré !");
+    }
+    
     private IEnumerator Dash()
     {
         canDash = false;
@@ -133,7 +152,6 @@ public class Player : MonoBehaviour
 
     public IEnumerator SpellCast(Spell spell)
     {
-        Debug.Log(spell.name);
         switch (spell.name)
         {
             case "Slow Mode":
@@ -148,7 +166,6 @@ public class Player : MonoBehaviour
                 isCastingBoost = true;
                 spell.name = "";
                 Debug.Log("Boost en cours de casting...");
-
                 yield return new WaitForSeconds(boostCastingTime);
                 ActivateBoost();
                 isCastingBoost = false;
@@ -160,6 +177,12 @@ public class Player : MonoBehaviour
                 isStopped = true;
                 Debug.Log("Joueur stoppé !");
                 StartCoroutine(DisableToggleAfterCooldown());
+                break;
+            case "Drunk Mode":
+                Debug.Log("Drunk en cours de casting...");
+                spell.name = "";
+                yield return new WaitForSeconds(drunkCastingTime);
+                ActivateDrunk();
                 break;
         }
     }
