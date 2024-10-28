@@ -50,63 +50,18 @@ public class AudioManager : MonoBehaviour
         audioSource.Play();
     }
 
-    public void PlayJumpSound()
-    {
-        audioSource.PlayOneShot(jumpSound, jumpVolume);
-    }
+    public void PlayJumpSound() => audioSource.PlayOneShot(jumpSound, jumpVolume);
+    public void PlayTrapSound() => audioSource.PlayOneShot(trapSound, trapVolume);
+    public void PlayDeathSound() => audioSource.PlayOneShot(deathSound, deathVolume);
+    public void PlayDogSound() => audioSource.PlayOneShot(dogSound, dogVolume);
+    public void PlayEatSound() => audioSource.PlayOneShot(eatSound, eatVolume);
+    public void PlayExplosionSound() => audioSource.PlayOneShot(explosionSound, explosionVolume);
+    public void PlayHitSound() => audioSource.PlayOneShot(hitSound, hitVolume);
+    public void PlayMenuSound() => PlayLoop(menuSound, menuVolume);
+    public void PlayTimerStressSound() => PlayLoop(timerStressSound, timerStressVolume);
+    public void PlayVictorySound() => audioSource.PlayOneShot(victorySound, victoryVolume);
 
-    public void PlayTrapSound()
-    {
-        audioSource.PlayOneShot(trapSound, trapVolume);
-    }
-
-    public void PlayDeathSound()
-    {
-        audioSource.PlayOneShot(deathSound, deathVolume);
-    }
-
-    public void PlayDogSound()
-    {
-        audioSource.PlayOneShot(dogSound, dogVolume);
-    }
-
-    public void PlayEatSound()
-    {
-        audioSource.PlayOneShot(eatSound, eatVolume);
-    }
-
-    public void PlayExplosionSound()
-    {
-        audioSource.PlayOneShot(explosionSound, explosionVolume);
-    }
-
-    public void PlayHitSound()
-    {
-        audioSource.PlayOneShot(hitSound, hitVolume);
-    }
-
-    public void PlayMenuSound()
-    {
-        audioSource.clip = menuSound;
-        audioSource.volume = menuVolume;
-        audioSource.loop = true;
-        audioSource.Play();
-    }
-
-    public void PlayTimerStressSound()
-    {
-        audioSource.clip = timerStressSound;
-        audioSource.volume = timerStressVolume;
-        audioSource.loop = true;
-        audioSource.Play();
-    }
-
-    public void PlayVictorySound()
-    {
-        audioSource.PlayOneShot(victorySound, victoryVolume);
-    }
-
-    // Jouer et arrêter le son de marche avec volume
+    // Jouer et arrêter le son de marche
     public void PlayWalkSound()
     {
         if (!walkAudioSource.isPlaying)
@@ -126,32 +81,12 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public bool IsWalkSoundPlaying()
-    {
-        return walkAudioSource.isPlaying;
-    }
+    public bool IsWalkSoundPlaying() => walkAudioSource.isPlaying;
 
     // Méthodes pour changer dynamiquement le volume de chaque son
-    public void SetCityAmbiantVolume(float volume)
-    {
-        cityAmbiantVolume = volume;
-        if (audioSource.clip == cityAmbiantSound)
-        {
-            audioSource.volume = cityAmbiantVolume;
-        }
-    }
+    public void SetCityAmbiantVolume(float volume) => SetVolume(cityAmbiantSound, ref cityAmbiantVolume, volume);
+    public void SetWalkVolume(float volume) => SetVolume(walkSound, ref walkVolume, volume);
 
-    public void SetWalkVolume(float volume)
-    {
-        walkVolume = volume;
-        if (walkAudioSource.isPlaying)
-        {
-            walkAudioSource.volume = walkVolume;
-        }
-    }
-
-    // Ajoutez des méthodes Set pour chaque autre son de manière similaire
-    // Exemples pour changer le volume des autres sons :
     public void SetJumpVolume(float volume) => jumpVolume = volume;
     public void SetTrapVolume(float volume) => trapVolume = volume;
     public void SetDeathVolume(float volume) => deathVolume = volume;
@@ -162,5 +97,22 @@ public class AudioManager : MonoBehaviour
     public void SetMenuVolume(float volume) => menuVolume = volume;
     public void SetTimerStressVolume(float volume) => timerStressVolume = volume;
     public void SetVictoryVolume(float volume) => victoryVolume = volume;
+
+    private void SetVolume(AudioClip clip, ref float volumeVar, float volume)
+    {
+        volumeVar = volume;
+        if (audioSource.clip == clip)
+        {
+            audioSource.volume = volume;
+        }
+    }
+
+    private void PlayLoop(AudioClip clip, float volume)
+    {
+        audioSource.clip = clip;
+        audioSource.volume = volume;
+        audioSource.loop = true;
+        audioSource.Play();
+    }
 }
 
