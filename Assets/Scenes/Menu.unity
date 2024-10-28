@@ -38091,18 +38091,18 @@ MonoBehaviour:
   timerStressSound: {fileID: 8300000, guid: 26b95a3892fd0496e9898079a5fe29b6, type: 3}
   victorySound: {fileID: 8300000, guid: 370c604be86274532adffdf649f9eeb3, type: 3}
   walkSound: {fileID: 8300000, guid: 2e115fa75e1474024b12c2442d849dbf, type: 3}
-  cityAmbiantVolume: 0.1
+  cityAmbiantVolume: 0.25
   jumpVolume: 0.5
   trapVolume: 0.5
-  deathVolume: 0.5
+  deathVolume: 1
   dogVolume: 0.5
   eatVolume: 0.5
-  explosionVolume: 0.5
+  explosionVolume: 0.9
   hitVolume: 0.5
   menuVolume: 0.5
   timerStressVolume: 0.5
-  victoryVolume: 0.5
-  walkVolume: 0.7
+  victoryVolume: 0.75
+  walkVolume: 1
 --- !u!4 &1233034972
 Transform:
   m_ObjectHideFlags: 0
