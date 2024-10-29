@@ -181,7 +181,9 @@ MonoBehaviour:
   Bombe: {fileID: 2163698283906036073, guid: c7cfd238a7e5b437eb464f9f0b4cbda1, type: 3}
   Coin: {fileID: 2588101586648291374, guid: 380a8dddc8df04d53aa5bbc7e267feca, type: 3}
   Wall: {fileID: 4269652707877748586, guid: 710dc91bb2cde43039c3e901d33efafe, type: 3}
+  AudioManager: {fileID: 0}
   player: {fileID: 5708432833005650873, guid: 1786189bf4c9bc149be77309a09ee622, type: 3}
+  audioManager: {fileID: 0}
 --- !u!4 &265541237
 Transform:
   m_ObjectHideFlags: 0
@@ -215,7 +217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2209039107409843267, guid: 054a69019af61d84f93bb33bff623552, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7260285744404677003, guid: 054a69019af61d84f93bb33bff623552, type: 3}
       propertyPath: m_Pivot.x
@@ -554,7 +556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2209039107409843267, guid: 054a69019af61d84f93bb33bff623552, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7260285744404677003, guid: 054a69019af61d84f93bb33bff623552, type: 3}
       propertyPath: m_Pivot.x
@@ -1234,7 +1236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2209039107409843267, guid: 054a69019af61d84f93bb33bff623552, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7260285744404677003, guid: 054a69019af61d84f93bb33bff623552, type: 3}
       propertyPath: m_Pivot.x
@@ -1496,7 +1498,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2209039107409843267, guid: 054a69019af61d84f93bb33bff623552, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7260285744404677003, guid: 054a69019af61d84f93bb33bff623552, type: 3}
       propertyPath: m_Pivot.x

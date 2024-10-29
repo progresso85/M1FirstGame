@@ -46,6 +46,11 @@ public class Player : MonoBehaviour
     public Image imageComponent;
     public Sprite[] renderSprite;
 
+    private GameObject boostObject;
+    private GameObject stunObject;
+    private GameObject slowObject;
+    private GameObject drunkObject;
+
 
     void Start()
     {
@@ -79,6 +84,12 @@ public class Player : MonoBehaviour
         animator.SetFloat("Vertical", mouvement.y);
         animator.SetFloat("Speed", mouvement.magnitude);
 
+        if (slowObject == null)
+        {
+            SetDisplaySpell();
+            Debug.Log(slowObject);
+        }
+
         StartCoroutine(SpellCast(GameManager.Instance.spell));
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
@@ -104,7 +115,14 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
-        //GameObject.Find("Boost").GetComponent<Image>.SetActive(false);
+                if (boostObject != null)
+                {
+                    boostObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Boost n'a pas été trouvé.");
+                }
         Debug.Log("Boost terminé, retour à la vitesse normale.");
     }
 
@@ -112,7 +130,14 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(toggleDuration);
         isStopped = false;
-        //GameObject.Find("Stun").GetComponent<Image>.SetActive(false);
+                if (stunObject != null)
+                {
+                    stunObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Stun n'a pas été trouvé.");
+                }
         Debug.Log("Joueur relancé automatiquement !");
     }
 
@@ -122,7 +147,14 @@ public class Player : MonoBehaviour
 
         currentSpeed = slowSpeed;
         isSlowed = true;
-        //GameObject.Find("Slow").GetComponent<Image>.SetActive(true);
+                if (slowObject != null)
+                {
+                    slowObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Slow n'a pas été trouvé.");
+                }
         StartCoroutine(DisableSlowAfterDuration(slowDuration));
     }
 
@@ -130,7 +162,15 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Boost activé !");
         currentSpeed = boostSpeed;
-        //GameObject.Find("Boost").GetComponent<Image>.SetActive(true);
+        Debug.Log(boostObject);
+        if (boostObject != null)
+                {
+                    boostObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Boost n'a pas été trouvé.");
+                }
         StartCoroutine(DisableBoostAfterTime(boostDuration));
     }
 
@@ -138,7 +178,14 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Drunk activé !");
         isDrunk = true;
-        //GameObject.Find("Drunk").GetComponent<Image>.SetActive(true);
+                if (drunkObject != null)
+                {
+                    drunkObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Drunk n'a pas été trouvé.");
+                }
         StartCoroutine(DisableDrunkAfterTime(drunkDuration));
     }
 
@@ -147,7 +194,15 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(duration);
         currentSpeed = normalSpeed;
         isSlowed = false;
-        //GameObject.Find("Slow").GetComponent<Image>.SetActive(false);
+        Debug.Log(slowObject);
+                if (slowObject != null)
+                {
+                    slowObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Slow n'a pas été trouvé.");
+                }
         Debug.Log("Slow terminé, retour à la vitesse normale.");
     }
 
@@ -155,7 +210,15 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         isDrunk = false;
-        //GameObject.Find("Drunk").GetComponent<Image>.SetActive(false);
+        Debug.Log(drunkObject);
+        if (drunkObject != null)
+                {
+                    drunkObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Drunk n'a pas été trouvé.");
+                }
         Debug.Log("Vous n'êtes plus ivre !");
     }
 
@@ -203,7 +266,15 @@ public class Player : MonoBehaviour
                 yield return new WaitForSeconds(toggleCastingTime);
                 isStopped = true;
                 Debug.Log("Joueur stoppé !");
-                //GameObject.Find("Stun").GetComponent<Image>.SetActive(true);
+                Debug.Log(stunObject);
+                if (stunObject != null)
+                {
+                    stunObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("L'objet Stun n'a pas été trouvé.");
+                }
                 StartCoroutine(DisableToggleAfterCooldown());
                 break;
 
@@ -213,6 +284,30 @@ public class Player : MonoBehaviour
                 yield return new WaitForSeconds(drunkCastingTime);
                 ActivateDrunk();
                 break;
+        }
+    }
+
+    void SetDisplaySpell()
+    {
+        boostObject = GameObject.Find("Boost");
+        if (boostObject != null)
+        {
+            boostObject.SetActive(false);
+        }
+        stunObject = GameObject.Find("Stun");
+        if (stunObject != null)
+        {
+            stunObject.SetActive(false);
+        }
+        drunkObject = GameObject.Find("Drunk");
+        if (drunkObject != null)
+        {
+            drunkObject.SetActive(false);
+        }
+        slowObject = GameObject.Find("Slow");
+        if (slowObject != null)
+        {
+            slowObject.SetActive(false);
         }
     }
 }
